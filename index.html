@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bernoulli EduGame - Pro Discovery Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CONTAINER NOTIFIKASI TOAST MELAYANG -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- NAVBAR UTAMA -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon">💧</span>
+            <span>BERNOULLI<span class="blue">LAB</span> <small class="pro-tag">PRO</small></span>
+        </div>
+
+        <nav class="main-tabs">
+            <button class="tab-btn active" onclick="openMainTab('tab-materi', this)">
+                📖 1. PBL & Materi Visual
+            </button>
+            <button class="tab-btn" id="btn-tab-game" onclick="openMainTab('tab-game', this)">
+                🎮 2. Virtual Lab & Misi
+            </button>
+            <button class="tab-btn" onclick="openMainTab('tab-miskonsepsi', this)">
+                ⚡ 3. Mitos vs Fakta & Trofi
+            </button>
+            <button class="tab-btn" onclick="openMainTab('tab-evaluasi', this)">
+                📝 4. Evaluasi & Lisensi
+            </button>
+        </nav>
+
+        <!-- KONTROL MUSIK LATAR MULTI-LAYER & XP -->
+        <div class="hud-right">
+            <div class="audio-controls">
+                <button id="bgm-btn" class="icon-btn" onclick="toggleBGM()">
+                    🎵 Radio: OFF
+                </button>
+                <select id="bgm-style" class="bgm-select" onchange="changeBGMStyle(this.value)" title="Pilih Genre Musik Lab">
+                    <option value="lofi">🎧 Lo-Fi Focus</option>
+                    <option value="synth">⚡ Cyber Synth</option>
+                </select>
+                <input type="range" id="bgm-vol" min="0" max="100" value="45" title="Volume Musik" oninput="changeBGMVolume(this.value)">
+                <button id="sfx-btn" class="icon-btn" onclick="toggleSFX()">
+                    🔊 SFX: ON
+                </button>
+            </div>
+
+            <div class="xp-box">
+                <div class="xp-label">
+                    <span id="rank-badge">🌟 Pemula Fluida</span>
+                    <strong id="xp-counter">0 XP</strong>
+                </div>
+                <div class="xp-track">
+                    <div class="xp-fill" id="xp-bar"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================
+         TAB 1: KASUS DETEKTIF PBL & MATERI VISUAL ANIMASI
+    ====================================================== -->
+    <main id="tab-materi" class="tab-content active">
+
+        <!-- BAGIAN ORIENTASI MASALAH (DETEKTIF FISIKA / PBL) -->
+        <section class="pbl-section">
+            <div class="section-title">
+                <span class="eyebrow">TAHAP 1 • ORIENTASI MASALAH (PROBLEM-BASED LEARNING)</span>
+                <h2>🕵️‍♂️ Kasus Detektif Fisika: <span>Mengapa Ini Bisa Terjadi? (+25 XP / Kasus)</span></h2>
+                <p>Analisis 3 fenomena nyata di bawah ini dan pilih hipotesis yang tepat untuk mengumpulkan modal XP pertamamu!</p>
+            </div>
+
+            <div class="pbl-grid">
+                <div class="pbl-card" id="pbl-card-1">
+                    <div>
+                        <div class="pbl-card-top">
+                            <span class="pbl-icon">🏠🌪️</span>
+                            <span class="xp-pill" id="pbl-xp-1">+25 XP</span>
+                        </div>
+                        <h3>Kasus #1: Misteri Atap Terangkat Saat Badai</h3>
+                        <p>Saat angin puting beliung bertiup sangat kencang secara mendatar di atas atap rumah, atap rumah sering kali <strong>terangkat lepas ke atas</strong>, bukan roboh terdorong ke bawah. Mengapa?</p>
+                    </div>
+                    <div>
+                        <div class="pbl-btns">
+                            <button onclick="solvePBL(1, false)">Karena angin masuk dari bawah tanah</button>
+                            <button onclick="solvePBL(1, true)">Angin cepat di atas atap menurunkan tekanan udara di atas</button>
+                        </div>
+                        <div id="pbl-ans-1" class="pbl-feedback hidden"></div>
+                    </div>
+                </div>
+
+                <div class="pbl-card" id="pbl-card-2">
+                    <div>
+                        <div class="pbl-card-top">
+                            <span class="pbl-icon">🚢💥</span>
+                            <span class="xp-pill" id="pbl-xp-2">+25 XP</span>
+                        </div>
+                        <h3>Kasus #2: Dua Kapal Cepat Saling Tersedot</h3>
+                        <p>Dua perahu cepat yang melaju sejajar dalam jarak terlalu dekat tiba-tiba <strong>tertarik saling mendekat dan bertabrakan</strong> di tengah, padahal kemudinya lurus. Apa penyebabnya?</p>
+                    </div>
+                    <div>
+                        <div class="pbl-btns">
+                            <button onclick="solvePBL(2, true)">Aliran air di celah sempit antar kapal lebih cepat & bertekanan rendah</button>
+                            <button onclick="solvePBL(2, false)">Gaya gravitasi antar badan kapal membesar</button>
+                        </div>
+                        <div id="pbl-ans-2" class="pbl-feedback hidden"></div>
+                    </div>
+                </div>
+
+                <div class="pbl-card" id="pbl-card-3">
+                    <div>
+                        <div class="pbl-card-top">
+                            <span class="pbl-icon">📄💨</span>
+                            <span class="xp-pill" id="pbl-xp-3">+25 XP</span>
+                        </div>
+                        <h3>Kasus #3: Eksperimen Tiup Selembar Kertas</h3>
+                        <p>Jika kamu memegang ujung selembar kertas HVS di depan bibirmu lalu <strong>meniup kencang di bagian atas permukaan kertas</strong>, ke manakah kertas akan bergerak?</p>
+                    </div>
+                    <div>
+                        <div class="pbl-btns">
+                            <button onclick="solvePBL(3, false)">Turun ke bawah karena ditekan tiupan</button>
+                            <button onclick="solvePBL(3, true)">Terangkat naik ke atas karena tekanan di atas berkurang</button>
+                        </div>
+                        <div id="pbl-ans-3" class="pbl-feedback hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PETA KONSEP & KOMPETENSI DASAR -->
+        <section class="peta-konsep-box">
+            <div class="section-title">
+                <span class="eyebrow">KOMPETENSI DASAR 3.4 & PETA KONSEP INTERAKTIF</span>
+                <h2>🗺️ Peta Konsep <span>Fluida Dinamis</span></h2>
+                <p>Menerapkan prinsip fluida dinamik dalam teknologi (Klik topik untuk langsung membuka animasi & materi detail):</p>
+            </div>
+
+            <div class="concept-tree">
+                <div class="tree-root">FLUIDA DINAMIS (Fluida Ideal: Tak Termampatkan, Tunak, Tak Kental)</div>
+                <div class="tree-branches">
+                    <div class="branch-col">
+                        <div class="branch-head">Persamaan Kontinuitas (Q = A<sub>1</sub>v<sub>1</sub> = A<sub>2</sub>v<sub>2</sub>)</div>
+                        <div class="branch-items">
+                            <span>• Bergantung pada: Luas penampang (A), Kecepatan fluida (v), Massa jenis (ρ)</span>
+                            <span>• Contoh penerapan: Penyempitan ujung selang air, keran air</span>
+                        </div>
+                    </div>
+                    <div class="branch-col">
+                        <div class="branch-head cyan-head">Hukum Bernoulli (P + ½ρv<sup>2</sup> + ρgh = Konstan)</div>
+                        <div class="branch-pills">
+                            <button onclick="jumpToSub('sub-asas')">📐 Penurunan Rumus</button>
+                            <button onclick="jumpToSub('sub-pesawat')">✈️ Gaya Angkat Pesawat</button>
+                            <button onclick="jumpToSub('sub-nyamuk')">🦟 Penyemprot Nyamuk</button>
+                            <button onclick="jumpToSub('sub-venturi')">🔬 Venturimeter</button>
+                            <button onclick="jumpToSub('sub-pitot')">🌬️ Pipa Pitot</button>
+                            <button onclick="jumpToSub('sub-torricelli')">🍾 Kebocoran Tangki</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATERI LENGKAP DENGAN ANIMASI DIAGRAM SVG -->
+        <section id="bab-asas" class="materi-layout">
+            <aside class="materi-nav">
+                <h4>📚 Daftar Isi Modul Visual</h4>
+                <button class="sub-btn active" onclick="showSubMateri('sub-asas', this)">A. Konsep & Penurunan Asas Bernoulli</button>
+                <button class="sub-btn" onclick="showSubMateri('sub-pesawat', this)">B.1. Gaya Angkat Pesawat Terbang</button>
+                <button class="sub-btn" onclick="showSubMateri('sub-nyamuk', this)">B.2. Alat Penyemprot Nyamuk</button>
+                <button class="sub-btn" onclick="showSubMateri('sub-venturi', this)">B.3. Venturimeter (Tanpa & Dengan Manometer)</button>
+                <button class="sub-btn" onclick="showSubMateri('sub-pitot', this)">B.4. Tabung Pitot (Pipa Pitot)</button>
+                <button class="sub-btn" onclick="showSubMateri('sub-torricelli', this)">B.5. Kebocoran Tangki / Botol (Torricelli)</button>
+            </aside>
+
+            <div class="materi-reader">
+                <!-- SUB A: PENURUNAN RUMUS -->
+                <article id="sub-asas" class="materi-article active">
+                    <span class="badge">BAGIAN A • KONSEP DASAR</span>
+                    <h2>Asas Bernoulli & Penurunan Persamaan</h2>
+                    <p>
+                        <strong>Asas Bernoulli</strong> adalah persamaan pokok fluida dinamis dengan arus tetap (<em>streamline</em>) yang melukiskan hubungan antara <strong>tekanan (P)</strong>, <strong>kecepatan aliran (v)</strong>, dan <strong>ketinggian (h)</strong>. Perhatikan animasi pipa aliran berubah ketinggian dan penampang berikut:
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 1: PIPA BERNOULLI -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Usaha & Energi pada Pipa Aliran Bernoulli</div>
+                        <svg viewBox="0 0 680 220" class="concept-svg">
+                            <!-- Garis Dasar Referensi -->
+                            <line x1="20" y1="200" x2="660" y2="200" stroke="#334155" stroke-width="2" stroke-dasharray="6,6"/>
+                            <text x="30" y="193" fill="#92adc4" font-size="11">Bidang Acuan Ketinggian (h = 0)</text>
+
+                            <!-- Badan Pipa Melengkung Naik & Menyempit -->
+                            <path d="M 60,120 C 240,120 300,45 480,45 L 620,45 L 620,85 L 480,85 C 300,85 240,175 60,175 Z" fill="rgba(33,191,255,0.18)" stroke="#48d7ff" stroke-width="3"/>
+
+                            <!-- Garis Aliran Streamline Beranimasi -->
+                            <path class="svg-stream-slow" d="M 65,138 C 245,138 300,58 615,58" fill="none" stroke="#45e4bd" stroke-width="2.5" stroke-dasharray="10,8"/>
+                            <path class="svg-stream-fast" d="M 65,158 C 245,158 300,72 615,72" fill="none" stroke="#48d7ff" stroke-width="2.5" stroke-dasharray="10,8"/>
+
+                            <!-- Panah Gaya Dorong F1 & F2 -->
+                            <line x1="20" y1="147" x2="58" y2="147" stroke="#ff9f43" stroke-width="3"/>
+                            <polygon points="62,147 52,141 52,153" fill="#ff9f43"/>
+                            <text x="18" y="135" fill="#ff9f43" font-size="12" font-weight="bold">F₁ = P₁A₁</text>
+
+                            <line x1="660" y1="65" x2="624" y2="65" stroke="#ff5252" stroke-width="3"/>
+                            <polygon points="620,65 630,59 630,71" fill="#ff5252"/>
+                            <text x="595" y="34" fill="#ff5252" font-size="12" font-weight="bold">F₂ = P₂A₂</text>
+
+                            <!-- Indikator h1 & h2 -->
+                            <line x1="120" y1="148" x2="120" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
+                            <text x="128" y="182" fill="#fbbf24" font-size="12" font-weight="bold">h₁ (Rendah)</text>
+
+                            <line x1="530" y1="65" x2="530" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
+                            <text x="538" y="145" fill="#fbbf24" font-size="12" font-weight="bold">h₂ (Tinggi)</text>
+
+                            <!-- Label Titik 1 & 2 -->
+                            <rect x="85" y="88" width="135" height="24" rx="5" fill="#0b192c" stroke="#48d7ff"/>
+                            <text x="95" y="104" fill="#eefaff" font-size="11" font-weight="bold">Titik 1: A₁ Besar, v₁ Kecil</text>
+
+                            <rect x="425" y="12" width="145" height="24" rx="5" fill="#0b192c" stroke="#45e4bd"/>
+                            <text x="435" y="28" fill="#45e4bd" font-size="11" font-weight="bold">Titik 2: A₂ Sempit, v₂ Cepat</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Inti Visual:</strong> Saat fluida naik dari <strong>h₁ ke h₂</strong> dan melewati pipa sempit <strong>A₂</strong>, kelajuannya bertambah cepat (<strong>v₂ &gt; v₁</strong>) namun tekanannya menurun (<strong>P₂ &lt; P₁</strong>) agar total energi mekanik per satuan volume tetap konstan!
+                        </div>
+                    </div>
+
+                    <div class="derivation-steps">
+                        <div class="deriv-card">
+                            <h4>1. Usaha Total pada Fluida (W)</h4>
+                            <p>Fluida bergerak dari titik A (ketinggian h<sub>1</sub>, penampang A<sub>1</sub>) ke titik B (ketinggian h<sub>2</sub>, penampang A<sub>2</sub>):</p>
+                            <div class="math-block">
+                                W<sub>1</sub> = F<sub>1</sub> · v<sub>1</sub> · t = P<sub>1</sub> · A<sub>1</sub> · v<sub>1</sub> · t<br>
+                                W<sub>2</sub> = −F<sub>2</sub> · v<sub>2</sub> · t = −P<sub>2</sub> · A<sub>2</sub> · v<sub>2</sub> · t<br>
+                                <strong>W = W<sub>1</sub> + W<sub>2</sub> = (P<sub>1</sub> − P<sub>2</sub>) · V</strong>
+                            </div>
+                        </div>
+                        <div class="deriv-card">
+                            <h4>2. Kekekalan Energi Mekanik (W = ΔEm)</h4>
+                            <p>Perubahan energi mekanik fluida (ΔEm = ΔEk + ΔEp) dibagi dengan volume V (dengan ρ = m / V):</p>
+                            <div class="math-block">
+                                (P<sub>1</sub> − P<sub>2</sub>)V = ½m(v<sub>2</sub><sup>2</sup> − v<sub>1</sub><sup>2</sup>) + mg(h<sub>2</sub> − h<sub>1</sub>)<br>
+                                <strong>P<sub>1</sub> − P<sub>2</sub> = ½ρ(v<sub>2</sub><sup>2</sup> − v<sub>1</sub><sup>2</sup>) + ρg(h<sub>2</sub> − h<sub>1</sub>)</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-formula">
+                        <span>PERSAMAAN HUKUM BERNOULLI</span>
+                        <h3>P<sub>1</sub> + ½ρv<sub>1</sub><sup>2</sup> + ρgh<sub>1</sub> = P<sub>2</sub> + ½ρv<sub>2</sub><sup>2</sup> + ρgh<sub>2</sub></h3>
+                        <p>"Jumlah tekanan, energi kinetik per satuan volume, dan energi potensial per satuan volume memiliki nilai yang sama di setiap titik sepanjang aliran fluida ideal."</p>
+                    </div>
+                    <div class="two-col-cards">
+                        <div class="mini-card">
+                            <h4>📌 Kasus 1: Fluida Tak Bergerak (v<sub>1</sub> = v<sub>2</sub> = 0)</h4>
+                            <div class="math-inline">P<sub>1</sub> − P<sub>2</sub> = ρ · g · (h<sub>2</sub> − h<sub>1</sub>)</div>
+                            <p>Menghasilkan persamaan <strong>tekanan hidrostatis</strong> dalam zat cair.</p>
+                        </div>
+                        <div class="mini-card">
+                            <h4>📌 Kasus 2: Fluida pada Ketinggian Sama (h<sub>1</sub> = h<sub>2</sub>)</h4>
+                            <div class="math-inline">P<sub>1</sub> + ½ρv<sub>1</sub><sup>2</sup> = P<sub>2</sub> + ½ρv<sub>2</sub><sup>2</sup> = Tetap</div>
+                            <p>Di tempat yang <strong>lajunya besar, tekanannya kecil</strong> dan sebaliknya.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SUB B1: PESAWAT TERBANG -->
+                <article id="sub-pesawat" class="materi-article">
+                    <span class="badge">PENERAPAN 1 • AERODINAMIKA</span>
+                    <h2>✈️ Gaya Angkat Pesawat Terbang (Airfoil)</h2>
+                    <p>
+                        Penampang sayap pesawat terbang (<em>airfoil</em>) dirancang melengkung di bagian atas dan lebih datar di bagian bawah sehingga garis arus udara di atas sayap lebih rapat dan mengalir lebih cepat.
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 2: AIRFOIL PESAWAT -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Aliran Udara & Gaya Angkat pada Penampang Sayap (Airfoil)</div>
+                        <svg viewBox="0 0 680 210" class="concept-svg">
+                            <!-- Garis Aliran Atas (Cepat) -->
+                            <path class="svg-stream-fast" d="M 30,90 Q 260,15 640,95" fill="none" stroke="#45e4bd" stroke-width="3" stroke-dasharray="14,8"/>
+                            <path class="svg-stream-fast" d="M 30,110 Q 260,30 640,110" fill="none" stroke="#45e4bd" stroke-width="2.5" stroke-dasharray="14,8"/>
+                            <text x="235" y="32" fill="#45e4bd" font-size="12" font-weight="bold">⚡ Aliran Atas Cepat (v₂ Besar) → Tekanan P₂ Kecil</text>
+
+                            <!-- Bentuk Airfoil Sayap -->
+                            <path d="M 130,115 Q 270,42 520,120 Q 290,126 130,115 Z" fill="#1e293b" stroke="#48d7ff" stroke-width="3.5"/>
+                            <text x="275" y="105" fill="#eefaff" font-size="13" font-weight="bold">SAYAP (Luas A)</text>
+
+                            <!-- Garis Aliran Bawah (Lambat) -->
+                            <path class="svg-stream-slow" d="M 30,142 Q 290,145 640,142" fill="none" stroke="#ff9f43" stroke-width="2.5" stroke-dasharray="9,9"/>
+                            <text x="215" y="192" fill="#ff9f43" font-size="12" font-weight="bold">🐢 Aliran Bawah Lambat (v₁ Kecil) → Tekanan P₁ Besar</text>
+
+                            <!-- Panah Gaya F1 (Dorong ke Atas) & F2 (Tekan ke Bawah) -->
+                            <line x1="320" y1="172" x2="320" y2="128" stroke="#45e4bd" stroke-width="5"/>
+                            <polygon points="320,120 311,134 329,134" fill="#45e4bd"/>
+                            <text x="335" y="162" fill="#45e4bd" font-size="13" font-weight="bold">F₁ = P₁ · A (Kuat)</text>
+
+                            <line x1="320" y1="45" x2="320" y2="72" stroke="#ff5252" stroke-width="3"/>
+                            <polygon points="320,78 314,68 326,68" fill="#ff5252"/>
+                            <text x="335" y="62" fill="#ff5252" font-size="12" font-weight="bold">F₂ = P₂ · A (Lemah)</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Syarat Terbang:</strong> Pesawat akan terangkat naik jika <strong>v₂ &gt; v₁</strong> sehingga <strong>F₁ − F₂ &gt; Berat Pesawat (W)</strong>.
+                        </div>
+                    </div>
+
+                    <ul class="materi-points">
+                        <li>Kecepatan aliran udara di bagian atas sayap lebih besar daripada di bagian bawah sayap (<strong>v<sub>2</sub> &gt; v<sub>1</sub></strong>).</li>
+                        <li>Tekanan udara di bawah sayap menjadi lebih besar daripada di atas sayap (<strong>P<sub>1</sub> &gt; P<sub>2</sub></strong>).</li>
+                        <li>Selisih gaya pada bagian bawah dan atas sayap (F<sub>1</sub> − F<sub>2</sub>) menghasilkan gaya angkat pesawat:</li>
+                    </ul>
+                    <div class="highlight-formula">
+                        <span>RUMUS GAYA ANGKAT PESAWAT</span>
+                        <h3>F<sub>1</sub> − F<sub>2</sub> = ½ · ρ · A · (v<sub>2</sub><sup>2</sup> − v<sub>1</sub><sup>2</sup>)</h3>
+                        <p>A = luas penampang sayap (m<sup>2</sup>), v<sub>1</sub> = laju udara bawah (m/s), v<sub>2</sub> = laju udara atas (m/s), ρ = massa jenis udara (kg/m<sup>3</sup>).</p>
+                    </div>
+                    <button class="launch-game-btn" onclick="openGameMode('airfoil')">
+                        🎮 Coba Eksperimen & Misi Gaya Angkat Pesawat →
+                    </button>
+                </article>
+
+                <!-- SUB B2: PENYEMPROT NYAMUK -->
+                <article id="sub-nyamuk" class="materi-article">
+                    <span class="badge">PENERAPAN 2 • EFEK VENTURI BEBAS</span>
+                    <h2>🦟 Alat Penyemprot Nyamuk / Parfum</h2>
+                    <p>
+                        Jika pengisap dari pompa ditekan, udara yang melewati pipa sempit pada bagian atas mulut pipa tandon akan memiliki <strong>kelajuan besar (v<sub>2</sub>)</strong> dan <strong>tekanan rendah (P<sub>2</sub> &lt; P<sub>1</sub>)</strong>.
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 3: PENYEMPROT NYAMUK -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Prinsip Tekanan Rendah pada Pompa Penyemprot</div>
+                        <svg viewBox="0 0 680 220" class="concept-svg">
+                            <!-- Tabung Pompa Udara -->
+                            <rect x="60" y="38" width="190" height="36" rx="6" fill="#1e293b" stroke="#48d7ff" stroke-width="2.5"/>
+                            <text x="95" y="60" fill="#eefaff" font-size="12" font-weight="bold">Pompa Udara</text>
+                            <!-- Nozzle Sempit -->
+                            <polygon points="250,42 320,50 320,62 250,70" fill="#1e293b" stroke="#48d7ff" stroke-width="2.5"/>
+                            <!-- Aliran Udara Cepat v2 -->
+                            <line class="svg-stream-fast" x1="255" y1="56" x2="560" y2="56" stroke="#45e4bd" stroke-width="4" stroke-dasharray="12,8"/>
+                            <text x="345" y="40" fill="#45e4bd" font-size="12" font-weight="bold">Udara Cepat (v₂ Besar) → P₂ Rendah!</text>
+
+                            <!-- Botol Cairan Bawah -->
+                            <rect x="265" y="110" width="110" height="95" rx="10" fill="rgba(69,228,189,0.22)" stroke="#48d7ff" stroke-width="2.5"/>
+                            <text x="388" y="165" fill="#ff9f43" font-size="12" font-weight="bold">Tekanan Atmosfer P₁</text>
+                            <text x="388" y="182" fill="#92adc4" font-size="11">mendorong cairan (v₁ ≈ 0)</text>
+
+                            <!-- Pipa Hisap Vertikal -->
+                            <rect x="314" y="60" width="12" height="130" fill="rgba(72,215,255,0.2)" stroke="#94a3b8" stroke-width="2"/>
+                            <!-- Cairan Naik Beranimasi -->
+                            <line class="svg-stream-up" x1="320" y1="185" x2="320" y2="62" stroke="#45e4bd" stroke-width="6" stroke-dasharray="8,6"/>
+                            <text x="200" y="100" fill="#fbbf24" font-size="12" font-weight="bold">Naik setinggi h ⬆️</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Mekanisme Fisika:</strong> Tekanan atmosfer <strong>P₁</strong> di permukaan cairan dalam botol menekan cairan naik melalui pipa hisap setinggi <strong>h</strong> menuju area bertekanan rendah <strong>P₂</strong> di ujung semprotan!
+                        </div>
+                    </div>
+
+                    <ul class="materi-points">
+                        <li>Cairan obat nyamuk pada bagian tandon mula-mula diam (v<sub>1</sub> = 0) akan naik setinggi h dan ikut terdorong keluar bersama semburan udara.</li>
+                    </ul>
+                    <div class="highlight-formula">
+                        <span>PERSAMAAN PENYEMPROT NYAMUK</span>
+                        <h3>g · h = ½ · v<sub>2</sub><sup>2</sup> &nbsp;&nbsp;atau&nbsp;&nbsp; h = v<sub>2</sub><sup>2</sup> / (2g)</h3>
+                    </div>
+                    <button class="launch-game-btn" onclick="openGameMode('sprayer')">
+                        🎮 Coba Eksperimen Pompa Penyemprot Nyamuk →
+                    </button>
+                </article>
+
+                <!-- SUB B3: VENTURIMETER -->
+                <article id="sub-venturi" class="materi-article">
+                    <span class="badge">PENERAPAN 3 • INSTRUMEN DEBIT & LAJU CAIRAN</span>
+                    <h2>🔬 Venturimeter (Tanpa & Dengan Manometer)</h2>
+                    <p>
+                        <strong>Venturimeter</strong> adalah alat yang digunakan untuk menentukan kecepatan aliran zat cair (<strong>v<sub>1</sub></strong>) di dalam pipa berdasarkan selisih ketinggian cairan (<strong>h</strong>) antara penampang lebar (A<sub>1</sub>) dan leher sempit (A<sub>2</sub>).
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 4: VENTURIMETER -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Perbandingan Tinggi Kolom pada Pipa Venturi</div>
+                        <svg viewBox="0 0 680 220" class="concept-svg">
+                            <!-- Tabung Manometer Tegak 1 (Tinggi) -->
+                            <rect x="175" y="25" width="28" height="95" fill="rgba(15,23,42,0.7)" stroke="#94a3b8" stroke-width="2"/>
+                            <rect x="177" y="45" width="24" height="75" fill="rgba(56,189,248,0.6)"/>
+                            <text x="145" y="20" fill="#48d7ff" font-size="11" font-weight="bold">P₁ Besar (Air Tinggi)</text>
+
+                            <!-- Tabung Manometer Tegak 2 (Rendah) -->
+                            <rect x="335" y="25" width="28" height="115" fill="rgba(15,23,42,0.7)" stroke="#94a3b8" stroke-width="2"/>
+                            <rect x="337" y="95" width="24" height="45" fill="rgba(56,189,248,0.6)"/>
+                            <text x="315" y="20" fill="#ff9f43" font-size="11" font-weight="bold">P₂ Kecil (Air Turun)</text>
+
+                            <!-- Garis Selisih h -->
+                            <line x1="205" y1="45" x2="332" y2="45" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4"/>
+                            <line x1="205" y1="95" x2="332" y2="95" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4"/>
+                            <text x="242" y="75" fill="#fbbf24" font-size="13" font-weight="bold">↕ Δh (Selisih)</text>
+
+                            <!-- Pipa Venturi Horizontal -->
+                            <path d="M 60,120 L 240,120 L 310,140 L 390,140 L 460,120 L 620,120 L 620,190 L 460,190 L 390,170 L 310,170 L 240,190 L 60,190 Z" fill="rgba(33,191,255,0.22)" stroke="#48d7ff" stroke-width="3"/>
+
+                            <!-- Aliran Partikel -->
+                            <line class="svg-stream-slow" x1="70" y1="155" x2="290" y2="155" stroke="#48d7ff" stroke-width="3" stroke-dasharray="10,10"/>
+                            <line class="svg-stream-fast" x1="290" y1="155" x2="420" y2="155" stroke="#45e4bd" stroke-width="3.5" stroke-dasharray="12,6"/>
+                            <line class="svg-stream-slow" x1="420" y1="155" x2="610" y2="155" stroke="#48d7ff" stroke-width="3" stroke-dasharray="10,10"/>
+
+                            <text x="115" y="210" fill="#eefaff" font-size="12" font-weight="bold">Penampang Lebar A₁ (v₁)</text>
+                            <text x="305" y="210" fill="#45e4bd" font-size="12" font-weight="bold">Leher Sempit A₂ (v₂ Cepat)</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Prinsip Kerja:</strong> Karena leher pipa menyempit (<strong>A₂ &lt; A₁</strong>), laju air meningkat (<strong>v₂ &gt; v₁</strong>) sehingga tekanan di leher turun (<strong>P₂ &lt; P₁</strong>) dan permukaan kolom cairan di atas leher menjadi lebih rendah sebesar <strong>h</strong>.
+                        </div>
+                    </div>
+
+                    <div class="two-col-cards">
+                        <div class="mini-card">
+                            <h4>1. Venturimeter Tanpa Manometer</h4>
+                            <div class="math-inline">v<sub>1</sub> = A<sub>2</sub> · √[ 2gh / (A<sub>1</sub><sup>2</sup> − A<sub>2</sub><sup>2</sup>) ]</div>
+                            <p>Dengan ΔP = ρ<sub>f</sub> · g · h merupakan selisih tekanan hidrostatis kedua pipa vertikal.</p>
+                        </div>
+                        <div class="mini-card">
+                            <h4>2. Venturimeter Dengan Manometer Raksa</h4>
+                            <div class="math-inline">v<sub>1</sub> = A<sub>2</sub> · √[ 2(ρ' − ρ)gh / (ρ(A<sub>1</sub><sup>2</sup> − A<sub>2</sub><sup>2</sup>)) ]</div>
+                            <p>Dengan ρ' adalah massa jenis raksa di dalam pipa U (13.600 kg/m<sup>3</sup>) dan ρ massa jenis fluida.</p>
+                        </div>
+                    </div>
+                    <button class="launch-game-btn" onclick="openGameMode('venturi')">
+                        🎮 Coba Eksperimen Venturimeter (Cari Nilai v₁) →
+                    </button>
+                </article>
+
+                <!-- SUB B4: PIPA PITOT -->
+                <article id="sub-pitot" class="materi-article">
+                    <span class="badge">PENERAPAN 4 • PENGUKUR LAJU GAS & PESAWAT</span>
+                    <h2>🌬️ Tabung Pitot (Pipa Pitot)</h2>
+                    <p>
+                        <strong>Pipa Pitot</strong> digunakan untuk mengukur kelajuan aliran gas (<strong>v<sub>1</sub></strong>) di dalam pipa atau laju pesawat terbang terhadap udara.
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 5: PIPA PITOT -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Titik Stagnasi (v₂ = 0) pada Tabung Pitot</div>
+                        <svg viewBox="0 0 680 220" class="concept-svg">
+                            <!-- Terowongan Pipa Gas -->
+                            <rect x="60" y="30" width="560" height="90" fill="rgba(33,191,255,0.1)" stroke="#48d7ff" stroke-width="3"/>
+                            <line class="svg-stream-fast" x1="75" y1="55" x2="600" y2="55" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="12,8"/>
+                            <line class="svg-stream-fast" x1="75" y1="95" x2="340" y2="95" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="12,8"/>
+                            <text x="90" y="48" fill="#45e4bd" font-size="12" font-weight="bold">Aliran Gas Laju v₁ (Tekanan P₁)</text>
+
+                            <!-- Mulut Stagnasi L-Tube -->
+                            <path d="M 350,75 L 450,75 L 450,195 L 250,195 L 250,120" fill="none" stroke="#e2e8f0" stroke-width="12"/>
+                            <path d="M 350,75 L 450,75 L 450,195 L 250,195 L 250,120" fill="none" stroke="#0f172a" stroke-width="7"/>
+
+                            <!-- Raksa Berwarna Emas di Pipa U -->
+                            <path d="M 250,145 L 250,195 L 450,195 L 450,175" fill="none" stroke="#fbbf24" stroke-width="7"/>
+
+                            <!-- Titik Stagnasi Glow -->
+                            <circle cx="348" cy="75" r="7" fill="#ff5252"/>
+                            <text x="365" y="65" fill="#ff9f43" font-size="11" font-weight="bold">Titik Stagnasi: Gas Tertahan (v₂ = 0, P₂ Maksimum)</text>
+                            <text x="275" y="162" fill="#fbbf24" font-size="12" font-weight="bold">↕ Beda Tinggi Raksa (h)</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Konsep Kunci:</strong> Kaki kanan manometer menghadap langsung aliran gas sehingga gas berhenti tertahan (<strong>v₂ = 0</strong>). Peningkatan tekanan <strong>P₂ − P₁ = ½ρv₁²</strong> mendorong raksa (ρ') turun sedalam <strong>h</strong>!
+                        </div>
+                    </div>
+
+                    <div class="highlight-formula">
+                        <span>RUMUS KECEPATAN GAS PIPA PITOT</span>
+                        <h3>v<sub>1</sub> = √[ (2 · ρ' · g · h) / ρ ]</h3>
+                        <p>ρ' = massa jenis raksa manometer (13.600 kg/m<sup>3</sup>), ρ = massa jenis gas yang mengalir (kg/m<sup>3</sup>), h = beda tinggi raksa (m).</p>
+                    </div>
+                    <button class="launch-game-btn" onclick="openGameMode('pitot')">
+                        🎮 Coba Eksperimen Tabung Pitot →
+                    </button>
+                </article>
+
+                <!-- SUB B5: TORRICELLI -->
+                <article id="sub-torricelli" class="materi-article">
+                    <span class="badge">PENERAPAN 5 • TEOREMA TORRICELLI</span>
+                    <h2>🍾 Kebocoran Dinding Tangki / Botol (Hukum Torricelli)</h2>
+                    <p>
+                        Jika sebuah tangki terbuka berisi air memiliki lubang kecil berjarak <strong>h<sub>1</sub></strong> di bawah permukaan air dan setinggi <strong>h<sub>2</sub></strong> dari dasar lantai, maka tekanan udara luar di permukaan atas dan di mulut lubang sama besar (<strong>P<sub>1</sub> = P<sub>2</sub> = P<sub>0</sub></strong>).
+                    </p>
+
+                    <!-- VISUALISASI ANIMASI SVG 6: TORRICELLI -->
+                    <div class="concept-anim-box">
+                        <div class="anim-title">🎬 Visualisasi Interaktif: Lintasan Parabola Pancaran Air Torricelli</div>
+                        <svg viewBox="0 0 680 220" class="concept-svg">
+                            <!-- Lantai -->
+                            <line x1="40" y1="195" x2="640" y2="195" stroke="#64748b" stroke-width="4"/>
+
+                            <!-- Tangki Air -->
+                            <rect x="120" y="30" width="110" height="165" fill="rgba(56,189,248,0.35)" stroke="#bae6fd" stroke-width="3"/>
+                            <line x1="120" y1="45" x2="230" y2="45" stroke="#48d7ff" stroke-width="2.5"/>
+                            <text x="132" y="24" fill="#92adc4" font-size="11">Permukaan Air (v₁ ≈ 0)</text>
+
+                            <!-- Indikator h1 & h2 -->
+                            <line x1="95" y1="45" x2="95" y2="115" stroke="#48d7ff" stroke-width="2" stroke-dasharray="4,4"/>
+                            <text x="42" y="85" fill="#48d7ff" font-size="12" font-weight="bold">h₁ (Kedalaman)</text>
+
+                            <line x1="95" y1="115" x2="95" y2="195" stroke="#45e4bd" stroke-width="2" stroke-dasharray="4,4"/>
+                            <text x="42" y="160" fill="#45e4bd" font-size="12" font-weight="bold">h₂ (Tinggi)</text>
+
+                            <!-- Pancaran Air Parabola -->
+                            <path class="svg-stream-fast" d="M 230,115 Q 375,118 450,195" fill="none" stroke="#48d7ff" stroke-width="4.5" stroke-dasharray="12,6"/>
+                            <circle cx="230" cy="115" r="5" fill="#ff9f43"/>
+                            <text x="245" y="106" fill="#eefaff" font-size="12" font-weight="bold">v = √(2gh₁) ➡️</text>
+
+                            <!-- Jarak Jatuh x -->
+                            <line x1="230" y1="208" x2="450" y2="208" stroke="#ff9f43" stroke-width="2.5"/>
+                            <text x="285" y="218" fill="#ff9f43" font-size="12" font-weight="bold">Jarak Pancaran Horizontal x = 2√(h₁ · h₂)</text>
+                        </svg>
+                        <div class="anim-caption">
+                            💡 <strong>Hubungan Fisika:</strong> Laju keluarnya air secara mendatar hanya bergantung pada kedalaman lubang dari permukaan air (<strong>h₁</strong>), sedangkan waktu jatuhnya ke lantai bergantung pada tinggi lubang dari lantai (<strong>h₂</strong>)!
+                        </div>
+                    </div>
+
+                    <div class="two-col-cards">
+                        <div class="mini-card">
+                            <h4>⚡ Kelajuan Pancaran Air (v)</h4>
+                            <div class="math-inline">v = √(2 · g · h<sub>1</sub>)</div>
+                        </div>
+                        <div class="mini-card">
+                            <h4>🎯 Waktu (t) & Jarak Horizontal (x)</h4>
+                            <div class="math-inline">t = √(2h<sub>2</sub> / g) &nbsp;|&nbsp; x = 2√(h<sub>1</sub> · h<sub>2</sub>)</div>
+                        </div>
+                    </div>
+                    <button class="launch-game-btn" onclick="openGameMode('torricelli')">
+                        🎮 Coba Eksperimen Botol Air Torricelli →
+                    </button>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====================================================
+         TAB 2: VIRTUAL LAB, PREDIKSI POE, MISI & DATA LOGGER
+    ====================================================== -->
+    <main id="tab-game" class="tab-content">
+        <div class="game-mode-bar">
+            <button class="gmode-btn active" id="gbtn-venturi" onclick="switchSimMode('venturi', this)">
+                🔬 1. Venturimeter (Cari v₁)
+            </button>
+            <button class="gmode-btn" id="gbtn-torricelli" onclick="switchSimMode('torricelli', this)">
+                🍾 2. Botol Torricelli (Cari v & x)
+            </button>
+            <button class="gmode-btn" id="gbtn-airfoil" onclick="switchSimMode('airfoil', this)">
+                ✈️ 3. Pesawat Terbang (Cari F)
+            </button>
+            <button class="gmode-btn" id="gbtn-sprayer" onclick="switchSimMode('sprayer', this)">
+                🦟 4. Penyemprot Nyamuk (Cari h)
+            </button>
+            <button class="gmode-btn" id="gbtn-pitot" onclick="switchSimMode('pitot', this)">
+                🌬️ 5. Pipa Pitot (Cari v₁)
+            </button>
+        </div>
+
+        <div class="lab-workspace">
+            <!-- SIDEBAR KONTROL VARIABEL BEBAS & MISI -->
+            <aside class="sim-sidebar">
+                <div class="mission-card">
+                    <div class="mission-tag">📋 PANDUAN PRAKTIKUM & MISI</div>
+                    <p id="sim-mission-text">
+                        Atur variabel bebas di bawah, lalu jalankan eksperimen atau gunakan sensor di layar untuk <strong>membuka nilai variabel terikat (🔒 ???)</strong> dan catat ke tabel LKPD!
+                    </p>
+                    <div id="sim-mission-status" class="status-pill">🔒 Variabel Terikat: Belum Ditemukan</div>
+                    <div id="sim-challenge-box" class="challenge-pill">🎯 Target Tantangan: Geser Sensor 🎯 ke dalam aliran pipa!</div>
+                </div>
+
+                <!-- FITUR BARU: TEBAK HIPOTESIS KILAT (POE) -->
+                <div class="poe-box">
+                    <div class="poe-header">
+                        <span>🧠 PREDIKSI HIPOTESIS (POE)</span>
+                        <small id="poe-bonus-tag">+25 XP</small>
+                    </div>
+                    <p id="poe-question">Jika luas leher sempit (A₂) diperkecil, bagaimana kelajuan (v₂) dan tekanan (P₂) di leher pipa?</p>
+                    <div class="poe-btns">
+                        <button onclick="answerPOE(true)" id="poe-btn-a">v₂ Naik & P₂ Turun</button>
+                        <button onclick="answerPOE(false)" id="poe-btn-b">v₂ Turun & P₂ Naik</button>
+                    </div>
+                    <div id="poe-feedback" class="poe-fb hidden"></div>
+                </div>
+
+                <!-- KONTROL 1: VENTURIMETER (CARI v1) -->
+                <div id="ctrl-venturi" class="ctrl-group">
+                    <h4>🔬 Variabel Bebas Venturimeter</h4>
+                    <div class="sl-box">
+                        <label><span>Tipe Alat Venturimeter</span></label>
+                        <select id="sel-venturi-type" onchange="lockDependentVar()">
+                            <option value="mercury">Dengan Manometer Raksa (Pipa U)</option>
+                            <option value="open">Tanpa Manometer (Pipa Tegak)</option>
+                        </select>
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Luas Penampang Besar (A<sub>1</sub>)</span><strong id="v-ven-a1">80 cm²</strong></label>
+                        <input type="range" id="sl-ven-a1" min="40" max="120" step="5" value="80" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Luas Penampang Kecil (A<sub>2</sub>)</span><strong id="v-ven-a2">20 cm²</strong></label>
+                        <input type="range" id="sl-ven-a2" min="5" max="35" step="5" value="20" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Beda Tinggi Manometer (h)</span><strong id="v-ven-h">20 cm</strong></label>
+                        <input type="range" id="sl-ven-h" min="5" max="40" step="1" value="20" oninput="lockDependentVar()">
+                    </div>
+                    <button class="run-exp-btn" onclick="unlockExperiment()">
+                        ▶️ Alirkan Fluida & Temukan v₁!
+                    </button>
+                </div>
+
+                <!-- KONTROL 2: BOTOL AIR TORRICELLI (CARI v & x) -->
+                <div id="ctrl-torricelli" class="ctrl-group hidden">
+                    <h4>🍾 Variabel Bebas Botol Air</h4>
+                    <div class="sl-box">
+                        <label><span>Kedalaman Lubang dari Air (h<sub>1</sub>)</span><strong id="v-tor-h1">16.0 cm</strong></label>
+                        <input type="range" id="sl-tor-h1" min="4" max="20" step="1" value="16" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Tinggi Lubang dari Meja (h<sub>2</sub>)</span><strong id="v-tor-h2">9.0 cm</strong></label>
+                        <input type="range" id="sl-tor-h2" min="4" max="20" step="1" value="9" oninput="lockDependentVar()">
+                    </div>
+                    <button class="run-exp-btn" onclick="unlockExperiment()">
+                        🍾 Cabut Sumbat Botol & Ukur Pancaran!
+                    </button>
+                    <button class="game-action-btn" style="margin-top:8px;" onclick="randomizePlant()">
+                        🌱 Pindahkan Pot Tanaman Target
+                    </button>
+                </div>
+
+                <!-- KONTROL 3: PESAWAT (CARI GAYA ANGKAT F1 - F2) -->
+                <div id="ctrl-airfoil" class="ctrl-group hidden">
+                    <h4>✈️ Variabel Bebas Sayap Pesawat</h4>
+                    <div class="sl-box">
+                        <label><span>Kelajuan Udara Bawah (v<sub>1</sub>)</span><strong id="v-air-v1">200 m/s</strong></label>
+                        <input type="range" id="sl-air-v1" min="100" max="300" step="10" value="200" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Kelajuan Udara Atas (v<sub>2</sub>)</span><strong id="v-air-v2">240 m/s</strong></label>
+                        <input type="range" id="sl-air-v2" min="120" max="360" step="10" value="240" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Luas Total Sayap (A)</span><strong id="v-air-area">50 m²</strong></label>
+                        <input type="range" id="sl-air-area" min="20" max="80" step="5" value="50" oninput="lockDependentVar()">
+                    </div>
+                    <button class="run-exp-btn" onclick="unlockExperiment()">
+                        🚀 Uji Terbangkan & Hitung Gaya Angkat!
+                    </button>
+                </div>
+
+                <!-- KONTROL 4: PENYEMPROT NYAMUK (CARI h) -->
+                <div id="ctrl-sprayer" class="ctrl-group hidden">
+                    <h4>🦟 Variabel Bebas Pompa</h4>
+                    <div class="sl-box">
+                        <label><span>Kelajuan Udara Pompa (v<sub>2</sub>)</span><strong id="v-spr-v2">20 m/s</strong></label>
+                        <input type="range" id="sl-spr-v2" min="5" max="35" step="1" value="20" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Tinggi Pipa Hisap Botol</span><strong id="v-spr-h">8.0 cm</strong></label>
+                        <input type="range" id="sl-spr-h" min="4" max="15" step="0.5" value="8" oninput="lockDependentVar()">
+                    </div>
+                    <button class="run-exp-btn" onclick="unlockExperiment()">
+                        💨 Tekan Pompa & Ukur Kenaikan h!
+                    </button>
+                    <button class="game-action-btn" style="margin-top:8px;" onclick="resetMosquitoes()">
+                        🦟 Munculkan Ulang Kawanan Nyamuk
+                    </button>
+                </div>
+
+                <!-- KONTROL 5: PIPA PITOT (CARI v1) -->
+                <div id="ctrl-pitot" class="ctrl-group hidden">
+                    <h4>🌬️ Variabel Bebas Tabung Pitot</h4>
+                    <div class="sl-box">
+                        <label><span>Beda Tinggi Raksa Manometer (h)</span><strong id="v-pit-h">10.0 cm</strong></label>
+                        <input type="range" id="sl-pit-h" min="2" max="25" step="1" value="10" oninput="lockDependentVar()">
+                    </div>
+                    <div class="sl-box">
+                        <label><span>Massa Jenis Gas (ρ gas)</span><strong id="v-pit-rho">1.3 kg/m³</strong></label>
+                        <input type="range" id="sl-pit-rho" min="0.8" max="2.5" step="0.1" value="1.3" oninput="lockDependentVar()">
+                    </div>
+                    <button class="run-exp-btn" onclick="unlockExperiment()">
+                        🌬️ Buka Katup Gas & Ukur Kelajuan v₁!
+                    </button>
+                </div>
+            </aside>
+
+            <!-- STAGE CANVAS + LIVE MATH X-RAY + DATA LOGGER -->
+            <section class="sim-stage">
+                <div class="canvas-box">
+                    <canvas id="gameCanvas" width="880" height="430"></canvas>
+                </div>
+
+                <!-- LIVE MATH X-RAY (TERKUNCI SEBELUM PERCOBAAN DIJALANKAN) -->
+                <div class="xray-panel">
+                    <div class="xray-head">
+                        <span>🔍 ANALISIS PERSAMAAN & VARIABEL TERIKAT</span>
+                        <strong id="xray-formula-name">Rumus Aktif</strong>
+                    </div>
+                    <div id="xray-substitution" class="xray-math">
+                        🔒 ??? — Tekan tombol hijau di kiri (atau geser Sensor 🎯 ke dalam pipa) untuk memulai eksperimen dan menemukan nilai variabel terikat!
+                    </div>
+                </div>
+
+                <!-- BAR TELEMETRI (KOTAK PERTAMA ADALAH VARIABEL TERIKAT YANG DICARI) -->
+                <div class="telemetry-row">
+                    <div class="tele-card highlight-tele">
+                        <span id="t1-lbl">🎯 VARIABEL TERIKAT (DICARI)</span>
+                        <strong id="t1-val" class="cyan">🔒 ???</strong>
+                    </div>
+                    <div class="tele-card">
+                        <span id="t2-lbl">VARIABEL PENDUKUNG 1</span>
+                        <strong id="t2-val" class="blue">0</strong>
+                    </div>
+                    <div class="tele-card">
+                        <span id="t3-lbl">VARIABEL PENDUKUNG 2</span>
+                        <strong id="t3-val" class="orange">0</strong>
+                    </div>
+                    <div class="tele-card">
+                        <span id="t4-lbl">STATUS EKSPERIMEN</span>
+                        <strong id="t4-val" class="green">SIAP DIUJI</strong>
+                    </div>
+                </div>
+
+                <!-- FITUR BARU: DATA LOGGER TABEL PENGAMATAN LKPD -->
+                <div class="logger-panel">
+                    <div class="logger-head">
+                        <div>
+                            <h4>📊 Tabel Data Logger Praktikum (Bantu Catat LKPD Manual)</h4>
+                            <p>Simpan hasil tiap perubahan variabel bebas ke dalam tabel di bawah ini untuk melihat pola grafik/datanya:</p>
+                        </div>
+                        <div class="logger-actions">
+                            <button class="log-btn" onclick="recordToLogger()">📌 Catat Data ke Tabel</button>
+                            <button class="log-clear-btn" onclick="clearLogger()">🗑️ Bersihkan</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="logger-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Alat / Simulasi</th>
+                                    <th>Variabel Bebas (Input)</th>
+                                    <th>Variabel Terikat (Hasil Ukur)</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logger-tbody">
+                                <tr class="empty-row">
+                                    <td colspan="5">Belum ada data tercatat. Jalankan eksperimen lalu klik <strong>"📌 Catat Data ke Tabel"</strong>!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- =====================================================
+         TAB 3: ARENA MITOS VS FAKTA & TROFI KOMPETENSI
+    ====================================================== -->
+    <main id="tab-miskonsepsi" class="tab-content">
+        <section class="myth-section">
+            <div class="section-title">
+                <span class="eyebrow">PENGUATAN KONSEP • HINDARI JEBAKAN FISIKA (+15 XP / Kartu)</span>
+                <h2>⚡ Arena Mitos vs Fakta: <span>Bedah Miskonsepsi Bernoulli</span></h2>
+                <p>Banyak orang keliru memahami fluida dinamis karena menggunakan intuisi sehari-hari yang salah. Klik keempat kartu di bawah untuk membalik fakta fisikanya dan klaim bonus XP!</p>
+            </div>
+
+            <div class="myth-grid">
+                <div class="myth-card" onclick="flipMythCard(this, 1)">
+                    <div class="myth-front">
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #1? (+15 XP)</span>
+                        <h3>"Saat air masuk ke bagian pipa yang sempit, air akan berdesak-desakan sehingga TEKANAN pada dinding pipa sempit pasti LEBIH BESAR."</h3>
+                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                    </div>
+                    <div class="myth-back">
+                        <span class="fact-tag">❌ MITOS! (KONSEP YANG SALAH)</span>
+                        <p><strong>Fakta Fisika:</strong> Di bagian pipa yang sempit, yang membesar adalah <strong>kelajuan aliran (v<sub>2</sub> &gt; v<sub>1</sub>)</strong>. Sesuai Hukum Kekekalan Energi (Asas Bernoulli), peningkatan energi kinetik fluida harus dibayar dengan <strong>penurunan tekanan statis (P<sub>2</sub> &lt; P<sub>1</sub>)</strong>!</p>
+                    </div>
+                </div>
+
+                <div class="myth-card" onclick="flipMythCard(this, 2)">
+                    <div class="myth-front">
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #2? (+15 XP)</span>
+                        <h3>"Semakin dalam posisi lubang kebocoran dari permukaan air (h<sub>1</sub> makin besar), maka jarak jatuh pancaran air di lantai (x) PASTI makin jauh."</h3>
+                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                    </div>
+                    <div class="myth-back">
+                        <span class="fact-tag">⚠️ BELUM TENTU!</span>
+                        <p><strong>Fakta Fisika:</strong> Laju keluar air memang makin cepat (<strong>v = √(2gh<sub>1</sub>)</strong>), tetapi jarak horizontal ditentukan oleh <strong>x = 2√(h<sub>1</sub> · h<sub>2</sub>)</strong>. Jika lubang terlalu dekat dengan dasar lantai (h<sub>2</sub> mendekati 0), air langsung menyentuh lantai sehingga jarak x justru sangat pendek! Jarak x maksimum terjadi tepat di tengah-tengah tinggi air (h<sub>1</sub> = h<sub>2</sub>).</p>
+                    </div>
+                </div>
+
+                <div class="myth-card" onclick="flipMythCard(this, 3)">
+                    <div class="myth-front">
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #3? (+15 XP)</span>
+                        <h3>"Pada Pipa Pitot, kaki manometer yang menghadap langsung menantang arah aliran gas memiliki laju fluida nol (v<sub>2</sub> = 0) dan bertekanan paling tinggi."</h3>
+                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                    </div>
+                    <div class="myth-back">
+                        <span class="fact-tag">✅ FAKTA TEPAT!</span>
+                        <p><strong>Fakta Fisika:</strong> Titik di mulut pipa yang menghadap lurus aliran gas disebut <strong>Titik Stagnasi</strong>. Karena gas tertahan berhenti di dalam pipa U (v<sub>2</sub> = 0), seluruh energi kinetiknya berubah menjadi tekanan, mendorong permukaan raksa turun sebesar <strong>h</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="myth-card" onclick="flipMythCard(this, 4)">
+                    <div class="myth-front">
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #4? (+15 XP)</span>
+                        <h3>"Sayap mobil balap Formula 1 (F1) menggunakan bentuk yang sama persis dengan sayap pesawat terbang agar mobil terasa ringan."</h3>
+                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                    </div>
+                    <div class="myth-back">
+                        <span class="fact-tag">❌ MITOS! (JUSTRU TERBALIK)</span>
+                        <p><strong>Fakta Fisika:</strong> Sayap mobil F1 dipasang <strong>terbalik (sisi melengkung di bawah, sisi datar di atas)</strong>. Tujuannya agar udara di kolong mobil mengalir lebih cepat (tekanan rendah) sehingga menghasilkan gaya tekan ke bawah (<em>Downforce</em>) agar ban mobil mencengkeram aspal saat menikung cepat!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERI BADGE PENCAPAIAN EKSPERIMEN -->
+        <section class="trophy-section">
+            <div class="section-title">
+                <span class="eyebrow">PENCAPAIAN LABORATORIUM VIRTUAL</span>
+                <h2>🏆 Koleksi Badge <span>Penemu Variabel Terikat</span></h2>
+                <p>Lakukan eksperimen di kelima alat pada Tab 2 untuk menyalakan seluruh lencana kompetensi di bawah ini:</p>
+            </div>
+
+            <div class="badge-grid">
+                <div class="trophy-card" id="badge-venturi">
+                    <div class="t-icon">🔬</div>
+                    <h4>Ahli Venturimeter</h4>
+                    <p>Menemukan kelajuan masuk v<sub>1</sub> pada pipa Venturi.</p>
+                    <span class="t-status">🔒 Belum Terbuka</span>
+                </div>
+                <div class="trophy-card" id="badge-torricelli">
+                    <div class="t-icon">🍾</div>
+                    <h4>Penakluk Torricelli</h4>
+                    <p>Menemukan laju pancaran v & jarak x pada botol bocor.</p>
+                    <span class="t-status">🔒 Belum Terbuka</span>
+                </div>
+                <div class="trophy-card" id="badge-airfoil">
+                    <div class="t-icon">✈️</div>
+                    <h4>Insinyur Aerodinamika</h4>
+                    <p>Menemukan Gaya Angkat F<sub>1</sub> − F<sub>2</sub> dan menerbangkan pesawat.</p>
+                    <span class="t-status">🔒 Belum Terbuka</span>
+                </div>
+                <div class="trophy-card" id="badge-sprayer">
+                    <div class="t-icon">🦟</div>
+                    <h4>Master Pompa Bernoulli</h4>
+                    <p>Menemukan tinggi hisap cairan h pada penyemprot nyamuk.</p>
+                    <span class="t-status">🔒 Belum Terbuka</span>
+                </div>
+                <div class="trophy-card" id="badge-pitot">
+                    <div class="t-icon">🌬️</div>
+                    <h4>Navigator Pipa Pitot</h4>
+                    <p>Menemukan laju aliran gas v<sub>1</sub> dari manometer raksa.</p>
+                    <span class="t-status">🔒 Belum Terbuka</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====================================================
+         TAB 4: CONTOH SOAL, ARENA EVALUASI & KARTU LISENSI
+    ====================================================== -->
+    <main id="tab-evaluasi" class="tab-content">
+        <section class="eval-section">
+            <div class="section-title">
+                <span class="eyebrow">BAGIAN C • MODUL FLUIDA DINAMIS</span>
+                <h2>🧮 Contoh Soal & <span>Pembahasan Bertahap</span></h2>
+            </div>
+
+            <div class="contoh-grid">
+                <div class="contoh-card">
+                    <span class="badge">Contoh Soal 1 (Gaya Angkat Pesawat)</span>
+                    <p>
+                        Sebuah pesawat terbang bergerak sehingga udara yang melalui bagian atas dan bawah sayap yang luas permukaannya <strong>50 m<sup>2</sup></strong> bergerak dengan kelajuan masing-masing <strong>320 m/s</strong> dan <strong>300 m/s</strong>. Berapakah besar gaya angkat pesawat? (<strong>ρ<sub>udara</sub> = 1,3 kg/m<sup>3</sup></strong>)
+                    </p>
+                    <details>
+                        <summary>👁️ Lihat Penyelesaian Langkah demi Langkah</summary>
+                        <div class="solusi-box">
+                            <strong>Diketahui:</strong> A = 50 m<sup>2</sup>, v<sub>2</sub> = 320 m/s, v<sub>1</sub> = 300 m/s, ρ = 1,3 kg/m<sup>3</sup><br>
+                            <strong>Jawab:</strong><br>
+                            F<sub>1</sub> − F<sub>2</sub> = ½ · ρ · A · (v<sub>2</sub><sup>2</sup> − v<sub>1</sub><sup>2</sup>)<br>
+                            F<sub>1</sub> − F<sub>2</sub> = ½ · (1,3) · (50) · (320<sup>2</sup> − 300<sup>2</sup>) = <strong>403.000 N</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="contoh-card">
+                    <span class="badge">Contoh Soal 2 (Reservoir Bocor / Torricelli)</span>
+                    <p>
+                        Sebuah reservoir penuh air memiliki lubang bocor dengan kedalaman <strong>h<sub>1</sub> = 1,8 m</strong> dari permukaan air dan tinggi lubang <strong>h<sub>2</sub> = 5 m</strong> dari tanah (<strong>g = 10 m/s<sup>2</sup></strong>). Tentukan: (a) kecepatan air keluar (<strong>v</strong>), (b) waktu jatuh ke tanah (<strong>t</strong>), dan (c) jarak pancaran maksimum (<strong>x</strong>)!
+                    </p>
+                    <details>
+                        <summary>👁️ Lihat Penyelesaian Langkah demi Langkah</summary>
+                        <div class="solusi-box">
+                            <strong>a. Kecepatan keluar (v):</strong> v = √(2 · g · h<sub>1</sub>) = √(2 · 10 · 1,8) = <strong>6 m/s</strong><br>
+                            <strong>b. Waktu sampai tanah (t):</strong> t = √(2h<sub>2</sub> / g) = √((2 × 5) / 10) = <strong>1 s</strong><br>
+                            <strong>c. Jarak pancaran (x):</strong> x = 2√(h<sub>1</sub> · h<sub>2</sub>) = 2√(1,8 × 5) = <strong>6 m</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="contoh-card">
+                    <span class="badge">Contoh Soal 3 (Venturimeter dengan Manometer Raksa)</span>
+                    <p>
+                        Pipa venturimeter memiliki luas penampang <strong>A<sub>1</sub> = 8 × 10<sup>−2</sup> m<sup>2</sup></strong> dan <strong>A<sub>2</sub> = 5 × 10<sup>−3</sup> m<sup>2</sup></strong>. Jika beda ketinggian raksa (<strong>ρ' = 13.600 kg/m<sup>3</sup></strong>) di dalam manometer adalah <strong>h = 0,2 m</strong> dan <strong>g = 10 m/s<sup>2</sup></strong>, tentukan kelajuan air (<strong>ρ = 1.000 kg/m<sup>3</sup></strong>)!
+                    </p>
+                    <details>
+                        <summary>👁️ Lihat Penyelesaian Langkah demi Langkah</summary>
+                        <div class="solusi-box">
+                            v = A<sub>2</sub> · √[ 2(ρ' − ρ)gh / (ρ(A<sub>1</sub><sup>2</sup> − A<sub>2</sub><sup>2</sup>)) ]<br>
+                            v = (5 × 10<sup>−3</sup>) · √[ (2 · (13.600 − 1.000) · 10 · 0,2) / (1.000 · ((8 × 10<sup>−2</sup>)<sup>2</sup> − (5 × 10<sup>−3</sup>)<sup>2</sup>)) ] = <strong>0,44 m/s</strong>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- KUIS EVALUASI DENGAN POWER-UP XP -->
+            <div class="quiz-container">
+                <div class="quiz-header-flex">
+                    <div class="section-title" style="margin-bottom:0;">
+                        <span class="eyebrow">UJI KOMPETENSI MANDIRI • GUNAKAN XP UNTUK BANTUAN</span>
+                        <h2>📝 Soal Evaluasi Interaktif <span>(5 Soal Modul)</span></h2>
+                    </div>
+                    <div class="lifeline-info">
+                        <span>💡 Hint Rumus: <strong>-50 XP</strong></span>
+                        <span>✂️ Eliminasi 50:50: <strong>-50 XP</strong></span>
+                    </div>
+                </div>
+                <div id="quiz-list" class="quiz-list"></div>
+                <div class="quiz-footer">
+                    <button class="primary-btn" onclick="submitEvaluation()">
+                        Periksa Jawaban & Hitung Nilai Akhir ✓
+                    </button>
+                    <div id="quiz-score-banner" class="score-banner hidden"></div>
+                </div>
+            </div>
+
+            <!-- FITUR BARU: KARTU LISENSI INSINYUR FLUIDA DIGITAL -->
+            <div class="license-generator-box">
+                <div class="section-title">
+                    <span class="eyebrow">SERTIFIKASI PRAKTIKUM VIRTUAL</span>
+                    <h2>🪪 Cetak Kartu Lisensi <span>Insinyur Fluida Bernoulli</span></h2>
+                    <p>Masukkan nama dan kelasmu untuk menerbitkan kartu hasil praktikum dan evaluasi yang siap di-<em>screenshot</em> atau dicetak:</p>
+                </div>
+
+                <div class="license-form">
+                    <input type="text" id="inp-student-name" placeholder="Ketik Nama Lengkapmu..." oninput="updateLicenseCard()">
+                    <input type="text" id="inp-student-class" placeholder="Kelas (Contoh: XI MIPA 1)" oninput="updateLicenseCard()">
+                    <button class="primary-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+                </div>
+
+                <div class="engineer-card" id="printable-license">
+                    <div class="eng-card-head">
+                        <div>
+                            <span class="eng-logo">💧 BERNOULLI VIRTUAL LAB • OFFICIAL LICENSE</span>
+                            <h3 id="lic-name">NAMA PENELITI MUDA</h3>
+                            <p id="lic-class">Kelas: XI MIPA -</p>
+                        </div>
+                        <div class="eng-rank-seal" id="lic-rank">🌟 Pemula Fluida</div>
+                    </div>
+                    <div class="eng-stats-grid">
+                        <div class="eng-stat">
+                            <span>TOTAL XP TERKUMPUL</span>
+                            <strong id="lic-xp">0 XP</strong>
+                        </div>
+                        <div class="eng-stat">
+                            <span>EKSPERIMEN SELESAI</span>
+                            <strong id="lic-badges">0 / 5 Alat</strong>
+                        </div>
+                        <div class="eng-stat">
+                            <span>NILAI EVALUASI AKHIR</span>
+                            <strong id="lic-score">Belum Diuji</strong>
+                        </div>
+                        <div class="eng-stat">
+                            <span>STATUS KOMPETENSI</span>
+                            <strong id="lic-status">DALAM PELATIHAN</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
