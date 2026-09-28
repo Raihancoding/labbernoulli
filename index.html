@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bernoulli EduGame - Pro Discovery Edition</title>
+    <title>Bernoulli EduGame - Pro Discovery & Live Arena Edition</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,11 +29,11 @@
                 ⚡ 3. Mitos vs Fakta & Trofi
             </button>
             <button class="tab-btn" onclick="openMainTab('tab-evaluasi', this)">
-                📝 4. Evaluasi & Lisensi
+                📝 4. Arena & Live Ranking
             </button>
         </nav>
 
-        <!-- KONTROL MUSIK LATAR MULTI-LAYER & XP -->
+        <!-- KONTROL MUSIK LATAR MULTI-LAYER, FULLSCREEN & XP -->
         <div class="hud-right">
             <div class="audio-controls">
                 <button id="bgm-btn" class="icon-btn" onclick="toggleBGM()">
@@ -46,6 +46,9 @@
                 <input type="range" id="bgm-vol" min="0" max="100" value="45" title="Volume Musik" oninput="changeBGMVolume(this.value)">
                 <button id="sfx-btn" class="icon-btn" onclick="toggleSFX()">
                     🔊 SFX: ON
+                </button>
+                <button id="fs-btn" class="icon-btn" onclick="toggleFullScreen()" title="Mode Layar Penuh">
+                    ⛶ Fullscreen
                 </button>
             </div>
 
@@ -189,18 +192,14 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Usaha & Energi pada Pipa Aliran Bernoulli</div>
                         <svg viewBox="0 0 680 220" class="concept-svg">
-                            <!-- Garis Dasar Referensi -->
                             <line x1="20" y1="200" x2="660" y2="200" stroke="#334155" stroke-width="2" stroke-dasharray="6,6"/>
                             <text x="30" y="193" fill="#92adc4" font-size="11">Bidang Acuan Ketinggian (h = 0)</text>
 
-                            <!-- Badan Pipa Melengkung Naik & Menyempit -->
                             <path d="M 60,120 C 240,120 300,45 480,45 L 620,45 L 620,85 L 480,85 C 300,85 240,175 60,175 Z" fill="rgba(33,191,255,0.18)" stroke="#48d7ff" stroke-width="3"/>
 
-                            <!-- Garis Aliran Streamline Beranimasi -->
                             <path class="svg-stream-slow" d="M 65,138 C 245,138 300,58 615,58" fill="none" stroke="#45e4bd" stroke-width="2.5" stroke-dasharray="10,8"/>
                             <path class="svg-stream-fast" d="M 65,158 C 245,158 300,72 615,72" fill="none" stroke="#48d7ff" stroke-width="2.5" stroke-dasharray="10,8"/>
 
-                            <!-- Panah Gaya Dorong F1 & F2 -->
                             <line x1="20" y1="147" x2="58" y2="147" stroke="#ff9f43" stroke-width="3"/>
                             <polygon points="62,147 52,141 52,153" fill="#ff9f43"/>
                             <text x="18" y="135" fill="#ff9f43" font-size="12" font-weight="bold">F₁ = P₁A₁</text>
@@ -209,14 +208,12 @@
                             <polygon points="620,65 630,59 630,71" fill="#ff5252"/>
                             <text x="595" y="34" fill="#ff5252" font-size="12" font-weight="bold">F₂ = P₂A₂</text>
 
-                            <!-- Indikator h1 & h2 -->
                             <line x1="120" y1="148" x2="120" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
                             <text x="128" y="182" fill="#fbbf24" font-size="12" font-weight="bold">h₁ (Rendah)</text>
 
                             <line x1="530" y1="65" x2="530" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
                             <text x="538" y="145" fill="#fbbf24" font-size="12" font-weight="bold">h₂ (Tinggi)</text>
 
-                            <!-- Label Titik 1 & 2 -->
                             <rect x="85" y="88" width="135" height="24" rx="5" fill="#0b192c" stroke="#48d7ff"/>
                             <text x="95" y="104" fill="#eefaff" font-size="11" font-weight="bold">Titik 1: A₁ Besar, v₁ Kecil</text>
 
@@ -278,20 +275,16 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Aliran Udara & Gaya Angkat pada Penampang Sayap (Airfoil)</div>
                         <svg viewBox="0 0 680 210" class="concept-svg">
-                            <!-- Garis Aliran Atas (Cepat) -->
                             <path class="svg-stream-fast" d="M 30,90 Q 260,15 640,95" fill="none" stroke="#45e4bd" stroke-width="3" stroke-dasharray="14,8"/>
                             <path class="svg-stream-fast" d="M 30,110 Q 260,30 640,110" fill="none" stroke="#45e4bd" stroke-width="2.5" stroke-dasharray="14,8"/>
                             <text x="235" y="32" fill="#45e4bd" font-size="12" font-weight="bold">⚡ Aliran Atas Cepat (v₂ Besar) → Tekanan P₂ Kecil</text>
 
-                            <!-- Bentuk Airfoil Sayap -->
                             <path d="M 130,115 Q 270,42 520,120 Q 290,126 130,115 Z" fill="#1e293b" stroke="#48d7ff" stroke-width="3.5"/>
                             <text x="275" y="105" fill="#eefaff" font-size="13" font-weight="bold">SAYAP (Luas A)</text>
 
-                            <!-- Garis Aliran Bawah (Lambat) -->
                             <path class="svg-stream-slow" d="M 30,142 Q 290,145 640,142" fill="none" stroke="#ff9f43" stroke-width="2.5" stroke-dasharray="9,9"/>
                             <text x="215" y="192" fill="#ff9f43" font-size="12" font-weight="bold">🐢 Aliran Bawah Lambat (v₁ Kecil) → Tekanan P₁ Besar</text>
 
-                            <!-- Panah Gaya F1 (Dorong ke Atas) & F2 (Tekan ke Bawah) -->
                             <line x1="320" y1="172" x2="320" y2="128" stroke="#45e4bd" stroke-width="5"/>
                             <polygon points="320,120 311,134 329,134" fill="#45e4bd"/>
                             <text x="335" y="162" fill="#45e4bd" font-size="13" font-weight="bold">F₁ = P₁ · A (Kuat)</text>
@@ -332,23 +325,17 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Prinsip Tekanan Rendah pada Pompa Penyemprot</div>
                         <svg viewBox="0 0 680 220" class="concept-svg">
-                            <!-- Tabung Pompa Udara -->
                             <rect x="60" y="38" width="190" height="36" rx="6" fill="#1e293b" stroke="#48d7ff" stroke-width="2.5"/>
                             <text x="95" y="60" fill="#eefaff" font-size="12" font-weight="bold">Pompa Udara</text>
-                            <!-- Nozzle Sempit -->
                             <polygon points="250,42 320,50 320,62 250,70" fill="#1e293b" stroke="#48d7ff" stroke-width="2.5"/>
-                            <!-- Aliran Udara Cepat v2 -->
                             <line class="svg-stream-fast" x1="255" y1="56" x2="560" y2="56" stroke="#45e4bd" stroke-width="4" stroke-dasharray="12,8"/>
                             <text x="345" y="40" fill="#45e4bd" font-size="12" font-weight="bold">Udara Cepat (v₂ Besar) → P₂ Rendah!</text>
 
-                            <!-- Botol Cairan Bawah -->
                             <rect x="265" y="110" width="110" height="95" rx="10" fill="rgba(69,228,189,0.22)" stroke="#48d7ff" stroke-width="2.5"/>
                             <text x="388" y="165" fill="#ff9f43" font-size="12" font-weight="bold">Tekanan Atmosfer P₁</text>
                             <text x="388" y="182" fill="#92adc4" font-size="11">mendorong cairan (v₁ ≈ 0)</text>
 
-                            <!-- Pipa Hisap Vertikal -->
                             <rect x="314" y="60" width="12" height="130" fill="rgba(72,215,255,0.2)" stroke="#94a3b8" stroke-width="2"/>
-                            <!-- Cairan Naik Beranimasi -->
                             <line class="svg-stream-up" x1="320" y1="185" x2="320" y2="62" stroke="#45e4bd" stroke-width="6" stroke-dasharray="8,6"/>
                             <text x="200" y="100" fill="#fbbf24" font-size="12" font-weight="bold">Naik setinggi h ⬆️</text>
                         </svg>
@@ -381,25 +368,20 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Perbandingan Tinggi Kolom pada Pipa Venturi</div>
                         <svg viewBox="0 0 680 220" class="concept-svg">
-                            <!-- Tabung Manometer Tegak 1 (Tinggi) -->
                             <rect x="175" y="25" width="28" height="95" fill="rgba(15,23,42,0.7)" stroke="#94a3b8" stroke-width="2"/>
                             <rect x="177" y="45" width="24" height="75" fill="rgba(56,189,248,0.6)"/>
                             <text x="145" y="20" fill="#48d7ff" font-size="11" font-weight="bold">P₁ Besar (Air Tinggi)</text>
 
-                            <!-- Tabung Manometer Tegak 2 (Rendah) -->
                             <rect x="335" y="25" width="28" height="115" fill="rgba(15,23,42,0.7)" stroke="#94a3b8" stroke-width="2"/>
                             <rect x="337" y="95" width="24" height="45" fill="rgba(56,189,248,0.6)"/>
                             <text x="315" y="20" fill="#ff9f43" font-size="11" font-weight="bold">P₂ Kecil (Air Turun)</text>
 
-                            <!-- Garis Selisih h -->
                             <line x1="205" y1="45" x2="332" y2="45" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4"/>
                             <line x1="205" y1="95" x2="332" y2="95" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4"/>
                             <text x="242" y="75" fill="#fbbf24" font-size="13" font-weight="bold">↕ Δh (Selisih)</text>
 
-                            <!-- Pipa Venturi Horizontal -->
                             <path d="M 60,120 L 240,120 L 310,140 L 390,140 L 460,120 L 620,120 L 620,190 L 460,190 L 390,170 L 310,170 L 240,190 L 60,190 Z" fill="rgba(33,191,255,0.22)" stroke="#48d7ff" stroke-width="3"/>
 
-                            <!-- Aliran Partikel -->
                             <line class="svg-stream-slow" x1="70" y1="155" x2="290" y2="155" stroke="#48d7ff" stroke-width="3" stroke-dasharray="10,10"/>
                             <line class="svg-stream-fast" x1="290" y1="155" x2="420" y2="155" stroke="#45e4bd" stroke-width="3.5" stroke-dasharray="12,6"/>
                             <line class="svg-stream-slow" x1="420" y1="155" x2="610" y2="155" stroke="#48d7ff" stroke-width="3" stroke-dasharray="10,10"/>
@@ -441,20 +423,16 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Titik Stagnasi (v₂ = 0) pada Tabung Pitot</div>
                         <svg viewBox="0 0 680 220" class="concept-svg">
-                            <!-- Terowongan Pipa Gas -->
                             <rect x="60" y="30" width="560" height="90" fill="rgba(33,191,255,0.1)" stroke="#48d7ff" stroke-width="3"/>
                             <line class="svg-stream-fast" x1="75" y1="55" x2="600" y2="55" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="12,8"/>
                             <line class="svg-stream-fast" x1="75" y1="95" x2="340" y2="95" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="12,8"/>
                             <text x="90" y="48" fill="#45e4bd" font-size="12" font-weight="bold">Aliran Gas Laju v₁ (Tekanan P₁)</text>
 
-                            <!-- Mulut Stagnasi L-Tube -->
                             <path d="M 350,75 L 450,75 L 450,195 L 250,195 L 250,120" fill="none" stroke="#e2e8f0" stroke-width="12"/>
                             <path d="M 350,75 L 450,75 L 450,195 L 250,195 L 250,120" fill="none" stroke="#0f172a" stroke-width="7"/>
 
-                            <!-- Raksa Berwarna Emas di Pipa U -->
                             <path d="M 250,145 L 250,195 L 450,195 L 450,175" fill="none" stroke="#fbbf24" stroke-width="7"/>
 
-                            <!-- Titik Stagnasi Glow -->
                             <circle cx="348" cy="75" r="7" fill="#ff5252"/>
                             <text x="365" y="65" fill="#ff9f43" font-size="11" font-weight="bold">Titik Stagnasi: Gas Tertahan (v₂ = 0, P₂ Maksimum)</text>
                             <text x="275" y="162" fill="#fbbf24" font-size="12" font-weight="bold">↕ Beda Tinggi Raksa (h)</text>
@@ -486,27 +464,22 @@
                     <div class="concept-anim-box">
                         <div class="anim-title">🎬 Visualisasi Interaktif: Lintasan Parabola Pancaran Air Torricelli</div>
                         <svg viewBox="0 0 680 220" class="concept-svg">
-                            <!-- Lantai -->
                             <line x1="40" y1="195" x2="640" y2="195" stroke="#64748b" stroke-width="4"/>
 
-                            <!-- Tangki Air -->
                             <rect x="120" y="30" width="110" height="165" fill="rgba(56,189,248,0.35)" stroke="#bae6fd" stroke-width="3"/>
                             <line x1="120" y1="45" x2="230" y2="45" stroke="#48d7ff" stroke-width="2.5"/>
                             <text x="132" y="24" fill="#92adc4" font-size="11">Permukaan Air (v₁ ≈ 0)</text>
 
-                            <!-- Indikator h1 & h2 -->
                             <line x1="95" y1="45" x2="95" y2="115" stroke="#48d7ff" stroke-width="2" stroke-dasharray="4,4"/>
                             <text x="42" y="85" fill="#48d7ff" font-size="12" font-weight="bold">h₁ (Kedalaman)</text>
 
                             <line x1="95" y1="115" x2="95" y2="195" stroke="#45e4bd" stroke-width="2" stroke-dasharray="4,4"/>
                             <text x="42" y="160" fill="#45e4bd" font-size="12" font-weight="bold">h₂ (Tinggi)</text>
 
-                            <!-- Pancaran Air Parabola -->
                             <path class="svg-stream-fast" d="M 230,115 Q 375,118 450,195" fill="none" stroke="#48d7ff" stroke-width="4.5" stroke-dasharray="12,6"/>
                             <circle cx="230" cy="115" r="5" fill="#ff9f43"/>
                             <text x="245" y="106" fill="#eefaff" font-size="12" font-weight="bold">v = √(2gh₁) ➡️</text>
 
-                            <!-- Jarak Jatuh x -->
                             <line x1="230" y1="208" x2="450" y2="208" stroke="#ff9f43" stroke-width="2.5"/>
                             <text x="285" y="218" fill="#ff9f43" font-size="12" font-weight="bold">Jarak Pancaran Horizontal x = 2√(h₁ · h₂)</text>
                         </svg>
@@ -567,7 +540,7 @@
                     <div id="sim-challenge-box" class="challenge-pill">🎯 Target Tantangan: Geser Sensor 🎯 ke dalam aliran pipa!</div>
                 </div>
 
-                <!-- FITUR BARU: TEBAK HIPOTESIS KILAT (POE) -->
+                <!-- TEBAK HIPOTESIS KILAT (POE) -->
                 <div class="poe-box">
                     <div class="poe-header">
                         <span>🧠 PREDIKSI HIPOTESIS (POE)</span>
@@ -689,7 +662,7 @@
                     <canvas id="gameCanvas" width="880" height="430"></canvas>
                 </div>
 
-                <!-- LIVE MATH X-RAY (TERKUNCI SEBELUM PERCOBAAN DIJALANKAN) -->
+                <!-- LIVE MATH X-RAY -->
                 <div class="xray-panel">
                     <div class="xray-head">
                         <span>🔍 ANALISIS PERSAMAAN & VARIABEL TERIKAT</span>
@@ -700,7 +673,7 @@
                     </div>
                 </div>
 
-                <!-- BAR TELEMETRI (KOTAK PERTAMA ADALAH VARIABEL TERIKAT YANG DICARI) -->
+                <!-- BAR TELEMETRI -->
                 <div class="telemetry-row">
                     <div class="tele-card highlight-tele">
                         <span id="t1-lbl">🎯 VARIABEL TERIKAT (DICARI)</span>
@@ -720,12 +693,12 @@
                     </div>
                 </div>
 
-                <!-- FITUR BARU: DATA LOGGER TABEL PENGAMATAN LKPD -->
+                <!-- DATA LOGGER TABEL PENGAMATAN LKPD -->
                 <div class="logger-panel">
                     <div class="logger-head">
                         <div>
                             <h4>📊 Tabel Data Logger Praktikum (Bantu Catat LKPD Manual)</h4>
-                            <p>Simpan hasil tiap perubahan variabel bebas ke dalam tabel di bawah ini untuk melihat pola grafik/datanya:</p>
+                            <p>Simpan hasil tiap perubahan variabel bebas ke dalam tabel di bawah ini untuk melihat pola datanya:</p>
                         </div>
                         <div class="logger-actions">
                             <button class="log-btn" onclick="recordToLogger()">📌 Catat Data ke Tabel</button>
@@ -861,7 +834,7 @@
     </main>
 
     <!-- =====================================================
-         TAB 4: CONTOH SOAL, ARENA EVALUASI & KARTU LISENSI
+         TAB 4: CONTOH SOAL, ARENA KAHOOT, LIVE RANKING & LISENSI
     ====================================================== -->
     <main id="tab-evaluasi" class="tab-content">
         <section class="eval-section">
@@ -917,28 +890,144 @@
                 </div>
             </div>
 
-            <!-- KUIS EVALUASI DENGAN POWER-UP XP -->
-            <div class="quiz-container">
-                <div class="quiz-header-flex">
-                    <div class="section-title" style="margin-bottom:0;">
-                        <span class="eyebrow">UJI KOMPETENSI MANDIRI • GUNAKAN XP UNTUK BANTUAN</span>
-                        <h2>📝 Soal Evaluasi Interaktif <span>(5 Soal Modul)</span></h2>
+            <!-- ARENA EVALUASI ALA KAHOOT & WORDWALL (10 SOAL + STREAK) -->
+            <div class="quiz-container arena-shell">
+                <!-- 1. LAYAR LOBBY MULAI GAME -->
+                <div id="arena-lobby" class="arena-lobby">
+                    <span class="eyebrow">GAME SHOW EVALUASI • 10 SOAL FLUIDA DINAMIS</span>
+                    <h2>🏆 Arena Turnamen <span>Bernoulli Blitz!</span></h2>
+                    <p>Masukkan Nama & Kelasmu terlebih dahulu. Skor turnamen dan nilai evaluasi akan langsung masuk ke <strong>Live Leaderboard Kelas</strong>!</p>
+
+                    <div class="arena-player-inputs">
+                        <input type="text" id="arena-inp-name" placeholder="👤 Ketik Nama Lengkapmu..." oninput="syncStudentIdentity(this.value, null)">
+                        <input type="text" id="arena-inp-class" placeholder="🏫 Kelas (Misal: XI MIPA 1)" oninput="syncStudentIdentity(null, this.value)">
                     </div>
-                    <div class="lifeline-info">
-                        <span>💡 Hint Rumus: <strong>-50 XP</strong></span>
-                        <span>✂️ Eliminasi 50:50: <strong>-50 XP</strong></span>
+
+                    <div class="arena-features-pills">
+                        <span>🎯 10 Soal (Konsep & Hitungan)</span>
+                        <span>🔥 Streak Multiplier s/d 2.0x</span>
+                        <span>💡 Power-Up Hint & 50:50</span>
+                        <span>📊 Live Ranking Satu Kelas</span>
+                    </div>
+
+                    <div class="arena-mode-select">
+                        <button class="arena-start-btn blitz" onclick="startQuizArena(true)">
+                            ⚡ Mulai Mode Turnamen (Timer 45 Detik + Bonus Cepat)
+                        </button>
+                        <button class="arena-start-btn zen" onclick="startQuizArena(false)">
+                            🧘 Mulai Mode Latihan Fokus (Tanpa Timer)
+                        </button>
                     </div>
                 </div>
-                <div id="quiz-list" class="quiz-list"></div>
-                <div class="quiz-footer">
-                    <button class="primary-btn" onclick="submitEvaluation()">
-                        Periksa Jawaban & Hitung Nilai Akhir ✓
+
+                <!-- 2. LAYAR PERMAINAN AKTIF (1 SOAL PER LAYAR) -->
+                <div id="arena-stage" class="arena-stage hidden">
+                    <div class="arena-hud">
+                        <div class="hud-pill">
+                            <span>SOAL</span>
+                            <strong id="arena-q-num">1 / 10</strong>
+                        </div>
+                        <div class="hud-pill streak-pill" id="arena-streak-box">
+                            <span>🔥 STREAK COMBO</span>
+                            <strong id="arena-streak-val">0x (1.0x Poin)</strong>
+                        </div>
+                        <div class="hud-pill">
+                            <span>🏆 SKOR ARENA</span>
+                            <strong id="arena-score-val" class="cyan">0</strong>
+                        </div>
+                    </div>
+
+                    <div id="arena-timer-wrap" class="arena-timer-wrap">
+                        <div class="arena-timer-bar" id="arena-timer-bar"></div>
+                        <span id="arena-timer-text">⏱️ 45s</span>
+                    </div>
+
+                    <div class="arena-question-card">
+                        <span class="q-topic-badge" id="arena-q-topic">TOPIK SOAL</span>
+                        <h3 id="arena-q-text">Memuat pertanyaan...</h3>
+                        <div id="arena-hint-box" class="quiz-hint-box hidden"></div>
+                    </div>
+
+                    <div class="arena-lifelines">
+                        <button class="ll-btn" id="ar-btn-hint" onclick="arenaUseHint()">💡 Buka Hint Rumus (-50 XP)</button>
+                        <button class="ll-btn" id="ar-btn-5050" onclick="arenaUse5050()">✂️ Eliminasi 2 Opsi (-50 XP)</button>
+                        <button class="ll-btn" id="ar-btn-freeze" onclick="arenaUseFreeze()">❄️ Bekukan Waktu +20s (-30 XP)</button>
+                    </div>
+
+                    <div id="arena-options-grid" class="kahoot-grid"></div>
+
+                    <div id="arena-feedback-panel" class="arena-feedback hidden">
+                        <div id="arena-fb-text"></div>
+                        <button class="primary-btn" id="arena-next-btn" onclick="nextArenaQuestion()">
+                            Soal Berikutnya ➔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. LAYAR PODIUM AKHIR -->
+                <div id="arena-result" class="arena-result hidden">
+                    <span class="eyebrow">TURNAMEN SELESAI • HASIL EVALUASI</span>
+                    <h2 id="res-title">🎉 Luar Biasa, Peneliti Fluida!</h2>
+                    <div class="podium-grid">
+                        <div class="podium-card gold">
+                            <span>NILAI AKADEMIK (SKALA 100)</span>
+                            <strong id="res-grade">100</strong>
+                            <small id="res-correct-count">10 dari 10 Soal Benar</small>
+                        </div>
+                        <div class="podium-card">
+                            <span>TOTAL SKOR TURNAMEN</span>
+                            <strong id="res-arena-pts" class="cyan">0 Poin</strong>
+                            <small>Termasuk Bonus Kecepatan & Streak</small>
+                        </div>
+                        <div class="podium-card">
+                            <span>MAX STREAK TERCAPAI</span>
+                            <strong id="res-max-streak" class="orange">🔥 0x Beruntun</strong>
+                            <small>Rekor Kombo Jawaban Tepat</small>
+                        </div>
+                    </div>
+                    <button class="arena-start-btn blitz" style="max-width:340px; margin: 18px auto 0;" onclick="resetQuizArena()">
+                        🔄 Mainkan Ulang Turnamen
                     </button>
-                    <div id="quiz-score-banner" class="score-banner hidden"></div>
                 </div>
             </div>
 
-            <!-- FITUR BARU: KARTU LISENSI INSINYUR FLUIDA DIGITAL -->
+            <!-- PAPAN PERINGKAT KELAS (LIVE GOOGLE SHEETS LEADERBOARD) -->
+            <div class="leaderboard-box">
+                <div class="lb-header">
+                    <div>
+                        <span class="eyebrow">REAL-TIME CLASSROOM RANKING • TOP 25</span>
+                        <h2>🏆 Papan Peringkat Kelas <span>(Live Leaderboard)</span></h2>
+                        <p id="lb-status-text">Menampilkan peringkat skor turnamen dan nilai akademik siswa secara langsung.</p>
+                    </div>
+                    <div class="lb-controls">
+                        <button class="log-btn" onclick="fetchLeaderboard()">🔄 Refresh Ranking</button>
+                        <button class="icon-btn" id="btn-auto-lb" onclick="toggleAutoRefreshLB()">📡 Mode Proyektor (Auto 5s): OFF</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="lb-table">
+                        <thead>
+                            <tr>
+                                <th>Peringkat</th>
+                                <th>Nama Siswa</th>
+                                <th>Kelas</th>
+                                <th>Skor Turnamen</th>
+                                <th>Nilai (0-100)</th>
+                                <th>Max Streak</th>
+                                <th>Alat Lab</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-tbody">
+                            <tr>
+                                <td colspan="7" class="empty-row">Memuat data peringkat dari server Google Sheets...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- KARTU LISENSI INSINYUR FLUIDA DIGITAL -->
             <div class="license-generator-box">
                 <div class="section-title">
                     <span class="eyebrow">SERTIFIKASI PRAKTIKUM VIRTUAL</span>
@@ -947,8 +1036,8 @@
                 </div>
 
                 <div class="license-form">
-                    <input type="text" id="inp-student-name" placeholder="Ketik Nama Lengkapmu..." oninput="updateLicenseCard()">
-                    <input type="text" id="inp-student-class" placeholder="Kelas (Contoh: XI MIPA 1)" oninput="updateLicenseCard()">
+                    <input type="text" id="inp-student-name" placeholder="Ketik Nama Lengkapmu..." oninput="syncStudentIdentity(this.value, null)">
+                    <input type="text" id="inp-student-class" placeholder="Kelas (Contoh: XI MIPA 1)" oninput="syncStudentIdentity(null, this.value)">
                     <button class="primary-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
                 </div>
 
