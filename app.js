@@ -1,6 +1,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// URL Server Google Sheets Live Leaderboard Milikmu
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx7_Nj2bVqOlJvnW-i2LIfQnNZCUpjr0lBR5JRzVNcYW-Aaq_77iotxFN9qvZlO9MjeLQ/exec";
+
 let simMode = "venturi";
 let xp = 0;
 let maxXP = 750;
@@ -104,12 +107,11 @@ function initAudio() {
     }
 }
 
-// Progresi Chord & Arpeggio untuk Lo-Fi Focus & Cyber Synthwave
 const lofiChords = [
-    [261.63, 329.63, 392.00, 493.88], // Cmaj7
-    [220.00, 261.63, 329.63, 392.00], // Am7
-    [174.61, 220.00, 261.63, 349.23], // Fmaj7
-    [196.00, 246.94, 293.66, 392.00]  // G6
+    [261.63, 329.63, 392.00, 493.88],
+    [220.00, 261.63, 329.63, 392.00],
+    [174.61, 220.00, 261.63, 349.23],
+    [196.00, 246.94, 293.66, 392.00]
 ];
 const synthBass = [130.81, 130.81, 110.00, 110.00, 87.31, 87.31, 98.00, 98.00];
 const synthArp = [523.25, 659.25, 783.99, 659.25, 440.00, 523.25, 659.25, 523.25];
@@ -122,7 +124,6 @@ function playBGMBeat() {
         const chord = lofiChords[chordIdx];
 
         if (bgmStyle === "lofi") {
-            // Lo-Fi Pad setiap awal bar + melodi lembut
             if (stepBeat % 2 === 0) {
                 chord.forEach(freq => {
                     const osc = audioCtx.createOscillator();
@@ -138,7 +139,6 @@ function playBGMBeat() {
                     osc.stop(now + 0.95);
                 });
             }
-            // Melodi bell pelan
             const melOsc = audioCtx.createOscillator();
             const melGain = audioCtx.createGain();
             melOsc.type = "sine";
@@ -151,7 +151,6 @@ function playBGMBeat() {
             melOsc.start(now);
             melOsc.stop(now + 0.48);
         } else {
-            // Cyber Synthwave: Bassline + Fast Arpeggio
             const bOsc = audioCtx.createOscillator();
             const bGain = audioCtx.createGain();
             bOsc.type = "sawtooth";
@@ -399,6 +398,9 @@ function openMainTab(tabId, btn) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
     document.getElementById(tabId).classList.add("active");
     if (btn) btn.classList.add("active");
+    if (tabId === "tab-evaluasi") {
+        fetchLeaderboard();
+    }
 }
 
 function showSubMateri(subId, btn) {
@@ -572,7 +574,6 @@ function renderVenturimeter() {
 
     const pWide = pipeAt(220), pNeck = pipeAt(440);
 
-    // Heatmap Tekanan Badan Pipa (Biru = P Tinggi, Oranye/Merah = P Rendah di Leher)
     for (let x = 60; x <= 820; x += 6) {
         const st = pipeAt(x);
         if (isUnlocked) {
@@ -626,7 +627,6 @@ function renderVenturimeter() {
         ctx.fillText(`Manometer Raksa (ρ' = 13.600 kg/m³) | Beda Tinggi h = ${h_cm} cm`, 330, baseU + 28);
     }
 
-    // Sensor Probe 🎯
     const probeSt = pipeAt(probe.x);
     ctx.beginPath(); ctx.arc(probe.x, probe.y, 18, 0, Math.PI * 2);
     ctx.fillStyle = isUnlocked ? "rgba(69, 228, 189, 0.35)" : "rgba(255, 159, 67, 0.35)";
@@ -750,7 +750,6 @@ function renderTorricelliBottle() {
         ctx.fillText("🔒 Lubang Disumbat (Klik Cabut Sumbat!)", startX + 125, holeY + 4);
     }
 
-    // Indikator Bunga & Progress Siram
     ctx.font = "32px sans-serif";
     ctx.fillText(plantTarget.watered >= 100 ? "🌻" : "🌱", plantTarget.x, floorY - 6);
     ctx.fillStyle = "#45e4bd"; ctx.font = "bold 11px sans-serif";
@@ -805,7 +804,6 @@ function drawAirplaneBody(x, y, pitchDeg, lift_kn) {
     ctx.fillStyle = "#38bdf8";
     ctx.beginPath(); ctx.moveTo(-35, 6); ctx.quadraticCurveTo(5, -22, 45, 8); ctx.lineTo(-35, 10); ctx.closePath(); ctx.fill();
 
-    // Panah Vektor Gaya Angkat F1 (Bawah) dan F2 (Atas)
     if (isUnlocked) {
         const arrowLen = Math.min(65, Math.max(20, Math.abs(lift_kn) * 0.04));
         ctx.strokeStyle = "#45e4bd"; ctx.lineWidth = 4;
@@ -1034,135 +1032,488 @@ function animateLoop() {
 }
 
 // =====================================================
-// 5 SOAL EVALUASI DENGAN FITUR HINT & 50:50 BERBASIS XP
+// 10 SOAL ARENA KAHOOT / WORDWALL (5 SOAL MODUL + 5 SOAL HOTS)
 // =====================================================
 const evaluationQuestions = [
     {
+        topic: "KONSEP TEKNOLOGI BERNOULLI",
         q: "1. Perhatikan alat-alat berikut: (1) Pompa hidrolik, (2) Karburator, (3) Venturimeter, (4) Termometer. Alat-alat yang prinsip kerjanya berdasarkan Hukum Bernoulli adalah ....",
-        opts: ["a. (1) dan (2)", "b. (1) dan (3)", "c. (1) dan (4)", "d. (2) dan (3)", "e. (2) dan (4)"],
+        opts: ["A. (1) dan (2)", "B. (1) dan (3)", "C. (1) dan (4)", "D. (2) dan (3)", "E. (2) dan (4)"],
         correct: 3,
         hint: "💡 Hint: Pompa hidrolik bekerja dengan Hukum Pascal (Fluida Statis), sedangkan alat yang melibatkan penyempitan aliran fluida bergerak adalah Karburator & Venturimeter.",
-        explain: "Karburator dan Venturimeter bekerja berdasarkan Hukum Bernoulli."
+        explain: "Karburator dan Venturimeter bekerja berdasarkan penurunan tekanan pada aliran cepat (Hukum Bernoulli)."
     },
     {
-        q: "2. Luas total sayap sebuah pesawat terbang 2 × 10⁵ cm² (20 m²). Udara mengalir pada bagian atas sayap dengan kecepatan 60 m/s dan pada bagian bawah sayap 50 m/s. Jika massa jenis udara = 1,29 kg/m³, maka berat pesawat adalah ....",
-        opts: ["a. 11.490 N", "b. 12.190 N", "c. 13.290 N", "d. 14.190 N", "e. 15.490 N"],
+        topic: "HITUNGAN GAYA ANGKAT PESAWAT",
+        q: "2. Luas total sayap sebuah pesawat terbang 2 × 10⁵ cm² (20 m²). Udara mengalir pada bagian atas sayap dengan kecepatan 60 m/s dan pada bagian bawah sayap 50 m/s. Jika massa jenis udara = 1,29 kg/m³, maka berat pesawat saat terbang mendatar adalah ....",
+        opts: ["A. 11.490 N", "B. 12.190 N", "C. 13.290 N", "D. 14.190 N", "E. 15.490 N"],
         correct: 3,
         hint: "💡 Hint: Gunakan rumus F = ½ · ρ · A · (v₂² − v₁²) dengan ρ = 1,29 kg/m³, A = 20 m², dan (60² − 50²) = 1.100.",
-        explain: "F = ½ · ρ · A · (v₂² − v₁²) = ½ · (1,29) · (20) · (60² − 50²) = 12,9 × 1.100 = 14.190 N."
+        explain: "F = ½ · (1,29) · (20) · (60² − 50²) = 12,9 × 1.100 = 14.190 N."
     },
     {
+        topic: "AERODINAMIKA SAYAP (AIRFOIL)",
         q: "3. Pada penampang sayap pesawat (A = atas sayap, B = bawah sayap), bagaimana keadaan kecepatan aliran udara (v) dan tekanan udara (P) hingga sayap pesawat memiliki gaya angkat ke atas?",
-        opts: ["a. vA = vB dan PA = PB", "b. vA > vB dan PA < PB", "c. vA < vB dan PA > PB", "d. vA > vB dan PA > PB", "e. vA > vB dan PA = PB"],
+        opts: ["A. vA = vB dan PA = PB", "B. vA > vB dan PA < PB", "C. vA < vB dan PA > PB", "D. vA > vB dan PA > PB", "E. vA > vB dan PA = PB"],
         correct: 1,
         hint: "💡 Hint: Agar terdorong ke atas, tekanan di bawah (PB) harus lebih besar dari tekanan di atas (PA), yang berarti kelajuan di atas (vA) harus lebih cepat.",
         explain: "Agar pesawat terangkat ke atas, laju udara di atas sayap harus lebih besar (vA > vB) sehingga tekanan di atas lebih kecil (PA < PB)."
     },
     {
+        topic: "PERSAMAAN UMUM BERNOULLI",
         q: "4. Dua pipa terhubung memiliki luas penampang berbeda. Kecepatan air pada penampang 1 sebesar 5 m/s dengan P₁ = 15.000 Pa, sedangkan pada penampang 2 kecepatannya 0,5 m/s dan posisinya 1 m lebih tinggi dari penampang 1 (g = 10 m/s²). Besar tekanan pada penampang 2 (P₂) adalah ....",
-        opts: ["a. 10.175 Pa", "b. 12.375 Pa", "c. 14.575 Pa", "d. 16.775 Pa", "e. 18.975 Pa"],
+        opts: ["A. 10.175 Pa", "B. 12.375 Pa", "C. 14.575 Pa", "D. 16.775 Pa", "E. 18.975 Pa"],
         correct: 3,
-        hint: "💡 Hint: Gunakan P₂ = P₁ + ½ρ(v₁² − v₂²) − ρg(h₂ − h₁) = 15.000 + 500(25 − 0,25) − 10.000(1).",
-        explain: "Berdasarkan persamaan Bernoulli dengan beda ketinggian h₂ − h₁ = 1 m diperoleh P₂ = 16.775 Pa."
+        hint: "💡 Hint: P₂ = P₁ + ½ρ(v₁² − v₂²) − ρg(h₂ − h₁) = 15.000 + 500(25 − 0,25) − 10.000(1).",
+        explain: "P₂ = 15.000 + 12.375 − 10.000 = 16.775 Pa."
     },
     {
-        q: "5. Tangki air memiliki lubang kebocoran dengan jarak lubang ke tanah H = 20 m dan jarak lubang ke permukaan air h = 5 m (g = 10 m/s²). Besar kecepatan air keluar dari bagian yang bocor (v) dan waktu yang diperlukan air sampai ke tanah (t) adalah ....",
-        opts: ["a. v = 5 m/s dan t = 1 s", "b. v = 1 m/s dan t = 5 s", "c. v = 10 m/s dan t = 1,5 s", "d. v = 2 m/s dan t = 10 s", "e. v = 10 m/s dan t = 2 s"],
+        topic: "TEOREMA TORRICELLI (TANGKI BOCOR)",
+        q: "5. Tangki air memiliki lubang kebocoran dengan jarak lubang ke tanah H = 20 m dan jarak lubang ke permukaan air h = 5 m (g = 10 m/s²). Besar kecepatan air keluar (v) dan waktu yang diperlukan air sampai ke tanah (t) adalah ....",
+        opts: ["A. v = 5 m/s dan t = 1 s", "B. v = 1 m/s dan t = 5 s", "C. v = 10 m/s dan t = 1,5 s", "D. v = 2 m/s dan t = 10 s", "E. v = 10 m/s dan t = 2 s"],
         correct: 4,
-        hint: "💡 Hint: Laju keluar air v = √(2gh) dengan h = 5 m, sedangkan waktu jatuh bebas ke tanah t = √(2H/g) dengan H = 20 m.",
-        explain: "v = √(2gh) = √(2 · 10 · 5) = 10 m/s, dan t = √(2H/g) = √(2 · 20 / 10) = 2 s."
+        hint: "💡 Hint: v = √(2gh) dengan h = 5 m, sedangkan waktu jatuh ke tanah t = √(2H/g) dengan H = 20 m.",
+        explain: "v = √(2 · 10 · 5) = 10 m/s, dan t = √(2 · 20 / 10) = 2 s."
+    },
+    {
+        topic: "JARAK PANCARAN HORIZONTAL TORRICELLI",
+        q: "6. Sebuah botol silinder berisi air setinggi 25 cm. Pada dinding botol terdapat lubang kebocoran berjarak h₁ = 9 cm dari permukaan air dan h₂ = 16 cm dari dasar meja. Jarak jatuh pancaran air mendatar (x) di atas meja adalah ....",
+        opts: ["A. 12 cm", "B. 18 cm", "C. 24 cm", "D. 30 cm", "E. 36 cm"],
+        correct: 2,
+        hint: "💡 Hint: Gunakan rumus cepat jarak pancaran Torricelli: x = 2 · √(h₁ · h₂).",
+        explain: "x = 2 · √(9 × 16) = 2 · √144 = 2 × 12 = 24 cm."
+    },
+    {
+        topic: "VENTURIMETER TANPA MANOMETER",
+        q: "7. Air mengalir melalui pipa venturimeter tanpa manometer. Luas penampang besar A₁ = 5 cm² dan penampang sempit A₂ = 3 cm². Jika selisih tinggi air pada kedua tabung vertikal adalah h = 20 cm (g = 10 m/s²), maka kelajuan air saat memasuki penampang besar (v₁) adalah ....",
+        opts: ["A. 1,0 m/s", "B. 1,5 m/s", "C. 2,0 m/s", "D. 2,5 m/s", "E. 3,0 m/s"],
+        correct: 1,
+        hint: "💡 Hint: v₁ = A₂ · √[ 2gh / (A₁² − A₂²) ] = 3 · √[ (2 · 10 · 0,2) / (5² − 3²) ].",
+        explain: "v₁ = 3 · √[ 4 / (25 − 9) ] = 3 · √(4 / 16) = 3 × (2 / 4) = 1,5 m/s."
+    },
+    {
+        topic: "ALAT PENYEMPROT NYAMUK",
+        q: "8. Pada pompa penyemprot nyamuk, udara dipompakan melewati mulut pipa sempit dengan kelajuan v₂ sehingga tekanan udara di mulut pipa turun. Jika percepatan gravitasi g = 10 m/s² dan cairan naik setinggi h = 5 cm (0,05 m) dengan asumsi persamaan modul g·h = ½v₂², maka kelajuan minimum semburan (v₂) adalah ....",
+        opts: ["A. 0,5 m/s", "B. 1,0 m/s", "C. 2,0 m/s", "D. 5,0 m/s", "E. 10,0 m/s"],
+        correct: 1,
+        hint: "💡 Hint: Gunakan persamaan penyemprot pada modul: g · h = ½ · v₂² sehingga v₂ = √(2 · g · h).",
+        explain: "v₂ = √(2 · 10 · 0,05) = √1 = 1,0 m/s."
+    },
+    {
+        topic: "PENGUKURAN LAJU GAS PIPA PITOT",
+        q: "9. Sebuah tabung Pitot berisi raksa (ρ' = 13.600 kg/m³) digunakan untuk mengukur kelajuan aliran gas yang massa jenisnya ρ = 1,36 kg/m³. Jika beda tinggi permukaan raksa pada kedua kaki manometer adalah h = 2 mm (0,002 m) dan g = 10 m/s², maka kelajuan aliran gas (v₁) tersebut adalah ....",
+        opts: ["A. 10 m/s", "B. 20 m/s", "C. 30 m/s", "D. 40 m/s", "E. 50 m/s"],
+        correct: 1,
+        hint: "💡 Hint: v₁ = √[ (2 · ρ' · g · h) / ρ ] = √[ (2 × 13.600 × 10 × 0,002) / 1,36 ].",
+        explain: "v₁ = √[ 544 / 1,36 ] = √400 = 20 m/s."
+    },
+    {
+        topic: "ANALISIS FENOMENA KONTINUITAS & BERNOULLI",
+        q: "10. Dua perahu motor melaju sejajar dengan kecepatan tinggi dalam jarak yang sangat berdekatan. Fenomena fisika yang paling tepat menjelaskan mengapa kedua perahu tersebut tiba-tiba terdorong saling mendekat dan bertabrakan adalah ....",
+        opts: [
+            "A. Aliran air di celah sempit antar perahu bergerak lambat sehingga tekanannya membesar",
+            "B. Aliran air di celah sempit antar perahu bergerak sangat cepat sehingga tekanannya lebih rendah daripada sisi luar perahu",
+            "C. Massa jenis air di antara kedua perahu meningkat drastis akibat putaran baling-baling",
+            "D. Gaya angkat ke atas (lift force) berubah menjadi gaya tarik gravitasi horizontal",
+            "E. Tekanan hidrostatis di dasar sungai menghisap kedua perahu ke bawah"
+        ],
+        correct: 1,
+        hint: "💡 Hint: Celah sempit di antara dua perahu berfungsi seperti leher pipa Venturi: laju air meningkat (v besar), tekanan statis turun (P kecil).",
+        explain: "Sesuai Asas Bernoulli, kelajuan air di celah sempit antara kedua perahu meningkat sehingga tekanannya turun; akibatnya tekanan air yang lebih besar dari sisi luar mendorong kedua perahu saling merapat."
     }
 ];
 
-function initQuiz() {
-    const container = document.getElementById("quiz-list");
-    container.innerHTML = evaluationQuestions.map((item, qIdx) => `
-        <div class="quiz-item">
-            <div class="quiz-item-top">
-                <h4>${item.q}</h4>
-                <div class="lifeline-btns">
-                    <button class="ll-btn" id="btn-hint-${qIdx}" onclick="useQuizHint(${qIdx})">💡 Hint (-50 XP)</button>
-                    <button class="ll-btn" id="btn-5050-${qIdx}" onclick="useQuiz5050(${qIdx})">✂️ 50:50 (-50 XP)</button>
-                </div>
-            </div>
-            <div id="hint-box-${qIdx}" class="quiz-hint-box hidden">${item.hint}</div>
-            <div class="quiz-options" id="opts-${qIdx}">
-                ${item.opts.map((opt, oIdx) => `
-                    <label id="lbl-${qIdx}-${oIdx}">
-                        <input type="radio" name="q${qIdx}" value="${oIdx}">
-                        <span>${opt}</span>
-                    </label>
-                `).join("")}
-            </div>
-            <div id="fb-${qIdx}" class="quiz-feedback"></div>
-        </div>
-    `).join("");
-}
+let arenaIdx = 0;
+let arenaStreak = 0;
+let arenaMaxStreak = 0;
+let arenaCorrect = 0;
+let arenaPoints = 0;
+let arenaTimedMode = true;
+let arenaTimeLeft = 45;
+let arenaTimerId = null;
+let arenaAnswered = false;
+let lbAutoTimer = null;
+const shapes = ["▲", "◆", "●", "■", "★"];
 
-function useQuizHint(qIdx) {
-    if (xp < 50) {
-        playSound("wrong");
-        showToast("⚠️", "XP Belum Cukup!", "Kumpulkan minimal 50 XP dari kasus PBL atau Lab Virtual terlebih dahulu.");
-        return;
+function syncStudentIdentity(nameVal, classVal) {
+    const licName = document.getElementById("inp-student-name");
+    const licClass = document.getElementById("inp-student-class");
+    const arName = document.getElementById("arena-inp-name");
+    const arClass = document.getElementById("arena-inp-class");
+
+    if (nameVal !== null) {
+        if (licName && licName.value !== nameVal) licName.value = nameVal;
+        if (arName && arName.value !== nameVal) arName.value = nameVal;
     }
-    playSound("click");
-    addXP(-50);
-    document.getElementById(`hint-box-${qIdx}`).classList.remove("hidden");
-    document.getElementById(`btn-hint-${qIdx}`).disabled = true;
-    showToast("💡", "Hint Rumus Terbuka!", "50 XP digunakan untuk membuka petunjuk pengerjaan.");
-}
-
-function useQuiz5050(qIdx) {
-    if (xp < 50) {
-        playSound("wrong");
-        showToast("⚠️", "XP Belum Cukup!", "Kumpulkan minimal 50 XP dari kasus PBL atau Lab Virtual terlebih dahulu.");
-        return;
+    if (classVal !== null) {
+        if (licClass && licClass.value !== classVal) licClass.value = classVal;
+        if (arClass && arClass.value !== classVal) arClass.value = classVal;
     }
-    playSound("click");
-    addXP(-50);
-    const correctIdx = evaluationQuestions[qIdx].correct;
-    let eliminated = 0;
-    for (let i = 0; i < 5; i++) {
-        if (i !== correctIdx && eliminated < 2) {
-            document.getElementById(`lbl-${qIdx}-${i}`).classList.add("eliminated");
-            eliminated++;
-        }
-    }
-    document.getElementById(`btn-5050-${qIdx}`).disabled = true;
-    showToast("✂️", "Eliminasi 50:50 Aktif!", "2 opsi jawaban yang salah telah dicoret.");
-}
-
-function submitEvaluation() {
-    let correctCount = 0;
-    evaluationQuestions.forEach((item, qIdx) => {
-        const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
-        const fb = document.getElementById(`fb-${qIdx}`);
-        if (selected && parseInt(selected.value) === item.correct) {
-            correctCount++;
-            fb.style.color = "#45e4bd";
-            fb.innerHTML = `✅ Benar! ${item.explain}`;
-        } else {
-            fb.style.color = "#ff5252";
-            fb.innerHTML = `❌ Kurang tepat. Pembahasan: ${item.explain}`;
-        }
-    });
-
-    const evalScore = correctCount * 20;
-    lastEvalScore = evalScore;
-    playSound("unlock");
-    const banner = document.getElementById("quiz-score-banner");
-    banner.classList.remove("hidden");
-    banner.innerHTML = `🎯 Skor Evaluasi Kamu: ${evalScore} / 100 (${correctCount} dari 5 Soal Benar)`;
-    showToast("🎯", `Nilai Evaluasi: ${evalScore} / 100`, "Kartu Lisensi Insinyur di bawah telah diperbarui!");
     updateLicenseCard();
 }
 
+function startQuizArena(isTimed) {
+    const arName = document.getElementById("arena-inp-name");
+    const arClass = document.getElementById("arena-inp-class");
+    const studentName = arName ? arName.value.trim() : "";
+    const studentClass = arClass ? arClass.value.trim() : "";
+
+    if (!studentName || !studentClass) {
+        playSound("wrong");
+        showToast("⚠️", "Isi Nama & Kelas Dulu!", "Ketik nama lengkap dan kelasmu agar skormu bisa masuk ke Papan Peringkat.");
+        if (arName && !studentName) arName.focus();
+        else if (arClass && !studentClass) arClass.focus();
+        return;
+    }
+
+    playSound("unlock");
+    arenaTimedMode = isTimed;
+    arenaIdx = 0;
+    arenaStreak = 0;
+    arenaMaxStreak = 0;
+    arenaCorrect = 0;
+    arenaPoints = 0;
+
+    document.getElementById("arena-lobby").classList.add("hidden");
+    document.getElementById("arena-result").classList.add("hidden");
+    document.getElementById("arena-stage").classList.remove("hidden");
+
+    document.getElementById("arena-timer-wrap").style.display = isTimed ? "block" : "none";
+    loadArenaQuestion();
+}
+
+function loadArenaQuestion() {
+    arenaAnswered = false;
+    const item = evaluationQuestions[arenaIdx];
+
+    document.getElementById("arena-q-num").innerText = `${arenaIdx + 1} / ${evaluationQuestions.length}`;
+    document.getElementById("arena-q-topic").innerText = item.topic;
+    document.getElementById("arena-q-text").innerText = item.q;
+
+    const hintBox = document.getElementById("arena-hint-box");
+    hintBox.classList.add("hidden");
+    hintBox.innerText = item.hint;
+
+    document.getElementById("ar-btn-hint").disabled = false;
+    document.getElementById("ar-btn-5050").disabled = false;
+    document.getElementById("ar-btn-freeze").disabled = !arenaTimedMode;
+    document.getElementById("arena-feedback-panel").classList.add("hidden");
+
+    updateStreakHUD();
+
+    const grid = document.getElementById("arena-options-grid");
+    grid.innerHTML = item.opts.map((opt, oIdx) => `
+        <button class="kahoot-btn k-color-${oIdx}" id="kbtn-${oIdx}" onclick="selectArenaOption(${oIdx})">
+            <span class="k-shape">${shapes[oIdx]}</span>
+            <span>${opt}</span>
+        </button>
+    `).join("");
+
+    if (arenaTimedMode) {
+        arenaTimeLeft = 45;
+        updateTimerUI();
+        clearInterval(arenaTimerId);
+        arenaTimerId = setInterval(() => {
+            arenaTimeLeft = Math.max(0, arenaTimeLeft - 0.25);
+            updateTimerUI();
+            if (arenaTimeLeft <= 0) {
+                clearInterval(arenaTimerId);
+                handleTimeOut();
+            }
+        }, 250);
+    }
+}
+
+function updateTimerUI() {
+    const pct = (arenaTimeLeft / 45) * 100;
+    const bar = document.getElementById("arena-timer-bar");
+    bar.style.width = `${pct}%`;
+    bar.style.background = arenaTimeLeft < 10
+        ? "linear-gradient(90deg, #ff5252, #ff9f43)"
+        : "linear-gradient(90deg, #45e4bd, #48d7ff)";
+    document.getElementById("arena-timer-text").innerText = `⏱️ ${Math.ceil(arenaTimeLeft)}s`;
+}
+
+function updateStreakHUD() {
+    const mult = (1 + Math.min(arenaStreak, 5) * 0.2).toFixed(1);
+    const box = document.getElementById("arena-streak-box");
+    document.getElementById("arena-streak-val").innerText = `${arenaStreak}x (${mult}x Poin)`;
+    document.getElementById("arena-score-val").innerText = arenaPoints.toLocaleString("id-ID");
+    if (arenaStreak >= 2) box.classList.add("on-fire");
+    else box.classList.remove("on-fire");
+}
+
+function selectArenaOption(pickedIdx) {
+    if (arenaAnswered) return;
+    arenaAnswered = true;
+    clearInterval(arenaTimerId);
+
+    const item = evaluationQuestions[arenaIdx];
+    const isCorrect = (pickedIdx === item.correct);
+
+    document.querySelectorAll(".kahoot-btn").forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === item.correct) btn.classList.add("correct-pick");
+        else if (idx === pickedIdx) btn.classList.add("wrong-pick");
+    });
+
+    const fbPanel = document.getElementById("arena-feedback-panel");
+    const fbText = document.getElementById("arena-fb-text");
+    fbPanel.classList.remove("hidden");
+
+    if (isCorrect) {
+        arenaCorrect++;
+        arenaStreak++;
+        if (arenaStreak > arenaMaxStreak) arenaMaxStreak = arenaStreak;
+
+        const mult = 1 + Math.min(arenaStreak, 5) * 0.2;
+        const speedBonus = arenaTimedMode ? Math.round(arenaTimeLeft * 8) : 100;
+        const gainedPts = Math.round((500 + speedBonus) * mult);
+        arenaPoints += gainedPts;
+
+        playStreakSound(arenaStreak);
+        if (arenaStreak >= 2) {
+            showToast("🔥", `STREAK COMBO ${arenaStreak}x!`, `+${gainedPts} Poin Arena (Multiplier ${mult.toFixed(1)}x)`);
+        }
+
+        fbText.innerHTML = `<strong style="color:#45e4bd;font-size:15px;">✅ JAWABAN TEPAT! (+${gainedPts} Poin | 🔥 Streak ${arenaStreak}x)</strong><br><span style="font-size:13px;color:#eefaff;">${item.explain}</span>`;
+    } else {
+        arenaStreak = 0;
+        playSound("wrong");
+        fbText.innerHTML = `<strong style="color:#ff5252;font-size:15px;">❌ KURANG TEPAT! (Streak Terputus)</strong><br><span style="font-size:13px;color:#eefaff;">${item.explain}</span>`;
+    }
+
+    updateStreakHUD();
+    document.getElementById("arena-next-btn").innerText =
+        arenaIdx === evaluationQuestions.length - 1 ? "Lihat Podium & Ranking 🏆" : "Soal Berikutnya ➔";
+}
+
+function handleTimeOut() {
+    if (arenaAnswered) return;
+    arenaAnswered = true;
+    arenaStreak = 0;
+    playSound("wrong");
+
+    const item = evaluationQuestions[arenaIdx];
+    document.querySelectorAll(".kahoot-btn").forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === item.correct) btn.classList.add("correct-pick");
+    });
+
+    updateStreakHUD();
+    const fbPanel = document.getElementById("arena-feedback-panel");
+    fbPanel.classList.remove("hidden");
+    document.getElementById("arena-fb-text").innerHTML =
+        `<strong style="color:#ff9f43;font-size:15px;">⏰ WAKTU HABIS! (Streak Reset ke 0)</strong><br><span style="font-size:13px;color:#eefaff;">${item.explain}</span>`;
+}
+
+function nextArenaQuestion() {
+    playSound("click");
+    if (arenaIdx < evaluationQuestions.length - 1) {
+        arenaIdx++;
+        loadArenaQuestion();
+    } else {
+        finishQuizArena();
+    }
+}
+
+function finishQuizArena() {
+    clearInterval(arenaTimerId);
+    document.getElementById("arena-stage").classList.add("hidden");
+    document.getElementById("arena-result").classList.remove("hidden");
+
+    const evalScore = arenaCorrect * 10;
+    lastEvalScore = evalScore;
+
+    playSound("unlock");
+    document.getElementById("res-grade").innerText = `${evalScore} / 100`;
+    document.getElementById("res-correct-count").innerText = `${arenaCorrect} dari 10 Soal Benar`;
+    document.getElementById("res-arena-pts").innerText = `${arenaPoints.toLocaleString("id-ID")} Poin`;
+    document.getElementById("res-max-streak").innerText = `🔥 ${arenaMaxStreak}x Beruntun`;
+
+    updateLicenseCard();
+    submitScoreToLeaderboard(evalScore);
+}
+
+function resetQuizArena() {
+    playSound("click");
+    document.getElementById("arena-result").classList.add("hidden");
+    document.getElementById("arena-lobby").classList.remove("hidden");
+}
+
+function arenaUseHint() {
+    if (xp < 50) {
+        playSound("wrong");
+        showToast("⚠️", "XP Belum Cukup!", "Butuh 50 XP dari eksperimen Lab atau kasus PBL.");
+        return;
+    }
+    playSound("click");
+    addXP(-50);
+    document.getElementById("arena-hint-box").classList.remove("hidden");
+    document.getElementById("ar-btn-hint").disabled = true;
+}
+
+function arenaUse5050() {
+    if (xp < 50) {
+        playSound("wrong");
+        showToast("⚠️", "XP Belum Cukup!", "Butuh 50 XP untuk mencoret 2 opsi salah.");
+        return;
+    }
+    playSound("click");
+    addXP(-50);
+    const correctIdx = evaluationQuestions[arenaIdx].correct;
+    let count = 0;
+    for (let i = 0; i < 5; i++) {
+        if (i !== correctIdx && count < 2) {
+            document.getElementById(`kbtn-${i}`).classList.add("eliminated");
+            count++;
+        }
+    }
+    document.getElementById("ar-btn-5050").disabled = true;
+}
+
+function arenaUseFreeze() {
+    if (xp < 30) {
+        playSound("wrong");
+        showToast("⚠️", "XP Belum Cukup!", "Butuh 30 XP untuk menambah waktu +20 detik.");
+        return;
+    }
+    playSound("unlock");
+    addXP(-30);
+    arenaTimeLeft = Math.min(45, arenaTimeLeft + 20);
+    updateTimerUI();
+    document.getElementById("ar-btn-freeze").disabled = true;
+    showToast("❄️", "Waktu Ditambah +20 Detik!", "30 XP digunakan.");
+}
+
+function playStreakSound(streakCount) {
+    if (!sfxEnabled) return;
+    try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        const baseFreq = 523.25 * Math.pow(1.06, Math.min(streakCount, 8));
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.setValueAtTime(baseFreq * 1.25, now + 0.09);
+        osc.frequency.setValueAtTime(baseFreq * 1.5, now + 0.18);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.42);
+    } catch (e) {}
+}
+
 // =====================================================
-// 6. GENERATOR KARTU LISENSI INSINYUR DIGITAL
+// LIVE LEADERBOARD GOOGLE SHEETS INTEGRATION
+// =====================================================
+async function submitScoreToLeaderboard(evalScore) {
+    const nama = (document.getElementById("arena-inp-name")?.value || "Anonim").trim();
+    const kelas = (document.getElementById("arena-inp-class")?.value || "-").trim();
+    const doneCount = Object.values(missionsDone).filter(Boolean).length;
+
+    const payload = {
+        nama: nama,
+        kelas: kelas,
+        skorTurnamen: arenaPoints,
+        nilaiAkademik: evalScore,
+        maxStreak: arenaMaxStreak,
+        xp: xp,
+        alatLab: `${doneCount}/5 Alat`
+    };
+
+    let localList = JSON.parse(localStorage.getItem("bernoulli_lb") || "[]");
+    localList.push(payload);
+    localList.sort((a, b) => b.skorTurnamen - a.skorTurnamen);
+    localStorage.setItem("bernoulli_lb", JSON.stringify(localList.slice(0, 25)));
+
+    try {
+        const statusEl = document.getElementById("lb-status-text");
+        if (statusEl) statusEl.innerText = "⏳ Sedang mengirim skormu ke Papan Peringkat Kelas...";
+        await fetch(GOOGLE_SHEET_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload)
+        });
+        showToast("🚀", "Skor Masuk ke Ranking Kelas!", `${nama} (${arenaPoints.toLocaleString("id-ID")} Poin)`);
+        setTimeout(fetchLeaderboard, 1400);
+    } catch (err) {
+        renderLeaderboardRows(localList);
+    }
+}
+
+async function fetchLeaderboard() {
+    const statusEl = document.getElementById("lb-status-text");
+    try {
+        if (statusEl) statusEl.innerText = "🔄 Memuat data peringkat terbaru dari Google Sheets...";
+        const res = await fetch(`${GOOGLE_SHEET_URL}?t=${Date.now()}`);
+        const data = await res.json();
+        renderLeaderboardRows(data);
+        if (statusEl) statusEl.innerText = `✅ Live Leaderboard Terhubung • Diperbarui pukul ${new Date().toLocaleTimeString("id-ID")}`;
+    } catch (err) {
+        const localList = JSON.parse(localStorage.getItem("bernoulli_lb") || "[]");
+        if (statusEl) statusEl.innerText = "⚠️ Menampilkan data lokal sementara (Pastikan izin Web App Google Sheets diset ke 'Anyone').";
+        renderLeaderboardRows(localList);
+    }
+}
+
+function renderLeaderboardRows(list) {
+    const tbody = document.getElementById("leaderboard-tbody");
+    if (!tbody) return;
+    if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-row">Belum ada siswa yang menyelesaikan turnamen. Jadilah peringkat #1!</td></tr>`;
+        return;
+    }
+
+    const medals = ["🥇 #1", "🥈 #2", "🥉 #3"];
+    tbody.innerHTML = list.map((item, idx) => {
+        const rowClass = idx < 3 ? `lb-row-${idx + 1}` : "";
+        const rankLabel = idx < 3 ? medals[idx] : `#${idx + 1}`;
+        return `
+            <tr class="${rowClass}">
+                <td><span class="rank-badge-pill">${rankLabel}</span></td>
+                <td><strong>${item.nama}</strong></td>
+                <td>${item.kelas}</td>
+                <td><strong style="color:#48d7ff;">${Number(item.skorTurnamen).toLocaleString("id-ID")} Poin</strong></td>
+                <td><strong style="color:#45e4bd;">${item.nilaiAkademik} / 100</strong></td>
+                <td>🔥 ${item.maxStreak}x</td>
+                <td>${item.alatLab || "-"}</td>
+            </tr>
+        `;
+    }).join("");
+}
+
+function toggleAutoRefreshLB() {
+    playSound("click");
+    const btn = document.getElementById("btn-auto-lb");
+    if (lbAutoTimer) {
+        clearInterval(lbAutoTimer);
+        lbAutoTimer = null;
+        btn.innerText = "📡 Mode Proyektor (Auto 5s): OFF";
+        btn.style.color = "#48d7ff";
+    } else {
+        fetchLeaderboard();
+        lbAutoTimer = setInterval(fetchLeaderboard, 5000);
+        btn.innerText = "📡 Mode Proyektor (Auto 5s): ON";
+        btn.style.color = "#45e4bd";
+        showToast("📡", "Mode Proyektor Aktif!", "Papan peringkat akan diperbarui otomatis setiap 5 detik.");
+    }
+}
+
+// =====================================================
+// GENERATOR KARTU LISENSI INSINYUR DIGITAL & FULLSCREEN
 // =====================================================
 function updateLicenseCard() {
-    const nameVal = document.getElementById("inp-student-name").value.trim();
-    const classVal = document.getElementById("inp-student-class").value.trim();
+    const nameEl = document.getElementById("inp-student-name");
+    const classEl = document.getElementById("inp-student-class");
+    if (!nameEl || !classEl) return;
+
+    const nameVal = nameEl.value.trim();
+    const classVal = classEl.value.trim();
 
     document.getElementById("lic-name").innerText = nameVal ? nameVal.toUpperCase() : "NAMA PENELITI MUDA";
     document.getElementById("lic-class").innerText = `Kelas: ${classVal || "XI MIPA -"}`;
@@ -1182,6 +1533,34 @@ function updateLicenseCard() {
     document.getElementById("lic-status").innerText = statusText;
 }
 
-initQuiz();
+function toggleFullScreen() {
+    playSound("click");
+    const docEl = document.documentElement;
+    const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+    if (!isFull) {
+        if (docEl.requestFullscreen) docEl.requestFullscreen();
+        else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+        else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+}
+
+document.addEventListener("fullscreenchange", () => {
+    const btn = document.getElementById("fs-btn");
+    if (!btn) return;
+    if (document.fullscreenElement) {
+        btn.innerText = "✖ Keluar Full";
+        btn.style.color = "#45e4bd";
+    } else {
+        btn.innerText = "⛶ Fullscreen";
+        btn.style.color = "#48d7ff";
+    }
+});
+
 updatePOEBox("venturi");
+fetchLeaderboard();
 animateLoop();
