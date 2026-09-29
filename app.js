@@ -198,22 +198,39 @@ function toggleBGM() {
     if (bgmPlaying) {
         btn.innerText = "🎵 Radio: ON";
         btn.style.color = "#45e4bd";
-        restartBGMTimer();
+        if (bgmStyle === "custom") {
+            customAudio.volume = bgmVolume;
+            customAudio.play().catch(e => console.log("Putar MP3 diblokir browser, klik layar dulu."));
+        } else {
+            restartBGMTimer();
+        }
     } else {
         btn.innerText = "🎵 Radio: OFF";
         btn.style.color = "#48d7ff";
         clearInterval(bgmInterval);
+        customAudio.pause();
     }
 }
 
 function changeBGMStyle(style) {
     bgmStyle = style;
     stepBeat = 0;
-    if (bgmPlaying) restartBGMTimer();
+    clearInterval(bgmInterval);
+    customAudio.pause(); // Matikan MP3 jika ganti ke mode synth
+
+    if (bgmPlaying) {
+        if (style === "custom") {
+            customAudio.volume = bgmVolume;
+            customAudio.play();
+        } else {
+            restartBGMTimer();
+        }
+    }
 }
 
 function changeBGMVolume(val) {
     bgmVolume = parseFloat(val) / 100;
+    customAudio.volume = bgmVolume; // Atur volume MP3 kustom
 }
 
 function toggleSFX() {
