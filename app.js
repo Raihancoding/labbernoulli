@@ -18,10 +18,13 @@ let stepBeat = 0;
 let isUnlocked = false;
 let missionsDone = { venturi: false, torricelli: false, airfoil: false, sprayer: false, pitot: false };
 let pblSolved = { 1: false, 2: false, 3: false };
-let mythFlipped = { 1: false, 2: false, 3: false, 4: false };
 let poeDone = { venturi: false, torricelli: false, airfoil: false, sprayer: false, pitot: false };
 let loggerRows = [];
 let lastEvalScore = null;
+
+// Kunci Jawaban Mitos vs Fakta
+const mythAnswers = { 1: false, 2: false, 3: true, 4: false }; // false = Mitos, true = Fakta
+let mythFlipped = { 1: false, 2: false, 3: false, 4: false };
 
 // Data Pertanyaan POE (Predict-Observe-Explain) tiap Mode Lab
 const poeConfig = {
@@ -383,13 +386,27 @@ function solvePBL(caseNum, isCorrect) {
     }
 }
 
-function flipMythCard(cardEl, num) {
-    cardEl.classList.toggle("flipped");
-    playSound("click");
-    if (!mythFlipped[num]) {
-        mythFlipped[num] = true;
-        addXP(15, `Membongkar Fakta Fisika #${num}`);
+// FUNGSI BARU: Tebak Mitos Atau Fakta
+function answerMyth(btnEl, num, isFact) {
+    if (mythFlipped[num]) return; // Jangan izinkan dobel klik
+    mythFlipped[num] = true;
+
+    const cardEl = document.getElementById(`myth-${num}`);
+    const resultMsg = cardEl.querySelector('.myth-result-msg');
+    const isCorrect = (isFact === mythAnswers[num]);
+
+    if (isCorrect) {
+        playSound("unlock");
+        addXP(15, `Tebakan Mitos/Fakta #${num} Benar!`);
+        resultMsg.className = "myth-result-msg correct";
+        resultMsg.innerHTML = "✅ TEPAT SEKALI! (+15 XP)";
+    } else {
+        playSound("wrong");
+        resultMsg.className = "myth-result-msg wrong";
+        resultMsg.innerHTML = "❌ TEBAKAN SALAH! (0 XP)";
     }
+
+    cardEl.classList.add("flipped");
 }
 
 function openMainTab(tabId, btn) {
@@ -1531,6 +1548,9 @@ function updateLicenseCard() {
         statusText = "KOMPETENSI AKTIF ⚡";
     }
     document.getElementById("lic-status").innerText = statusText;
+    
+    // Update angka Barcode
+    document.getElementById("lic-barcode").innerText = `*BNL-${xp}-${lastEvalScore || 0}*`;
 }
 
 function toggleFullScreen() {
