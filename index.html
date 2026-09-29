@@ -134,35 +134,80 @@
             </div>
         </section>
 
-        <!-- PETA KONSEP & KOMPETENSI DASAR -->
+        <!-- PETA KONSEP HUKUM BERNOULLI (MURNI FOKUS BERNOULLI + GARIS CABANG) -->
         <section class="peta-konsep-box">
             <div class="section-title">
-                <span class="eyebrow">KOMPETENSI DASAR 3.4 & PETA KONSEP INTERAKTIF</span>
-                <h2>🗺️ Peta Konsep <span>Fluida Dinamis</span></h2>
-                <p>Menerapkan prinsip fluida dinamik dalam teknologi (Klik topik untuk langsung membuka animasi & materi detail):</p>
+                <span class="eyebrow">PETA KONSEP & ALUR BELAJAR INTERAKTIF</span>
+                <h2>🗺️ Peta Konsep <span>Hukum Bernoulli</span></h2>
+                <p>Pahami bagan alur Hukum Bernoulli di bawah ini, lalu klik salah satu kotak teknologi di bagian bawah untuk membuka animasi & rumusnya:</p>
             </div>
 
-            <div class="concept-tree">
-                <div class="tree-root">FLUIDA DINAMIS (Fluida Ideal: Tak Termampatkan, Tunak, Tak Kental)</div>
-                <div class="tree-branches">
-                    <div class="branch-col">
-                        <div class="branch-head">Persamaan Kontinuitas (Q = A<sub>1</sub>v<sub>1</sub> = A<sub>2</sub>v<sub>2</sub>)</div>
-                        <div class="branch-items">
-                            <span>• Bergantung pada: Luas penampang (A), Kecepatan fluida (v), Massa jenis (ρ)</span>
-                            <span>• Contoh penerapan: Penyempitan ujung selang air, keran air</span>
-                        </div>
+            <div class="bernoulli-map">
+                <!-- LEVEL 1: AKAR UTAMA -->
+                <div class="bmap-root" onclick="jumpToSub('sub-asas')">
+                    <span class="bmap-tag">HUKUM POKOK FLUIDA DINAMIS</span>
+                    <h3>ASAS / HUKUM BERNOULLI</h3>
+                    <div class="bmap-eq">P₁ + ½ρv₁² + ρgh₁ = P₂ + ½ρv₂² + ρgh₂ = Konstan</div>
+                </div>
+
+                <!-- GARIS CABANG VERTIKAL & HORIZONTAL -->
+                <div class="bmap-line-v"></div>
+
+                <!-- LEVEL 2: 3 PRINSIP KUNCI BERNOULLI -->
+                <div class="bmap-pillars">
+                    <div class="bmap-pillar-card">
+                        <span>⚡ 1. DASAR FISIKA</span>
+                        <strong>Kekekalan Energi Mekanik</strong>
+                        <p>Usaha oleh selisih tekanan fluida (W) sebanding dengan perubahan Energi Kinetik (½ρv²) & Energi Potensial (ρgh).</p>
                     </div>
-                    <div class="branch-col">
-                        <div class="branch-head cyan-head">Hukum Bernoulli (P + ½ρv<sup>2</sup> + ρgh = Konstan)</div>
-                        <div class="branch-pills">
-                            <button onclick="jumpToSub('sub-asas')">📐 Penurunan Rumus</button>
-                            <button onclick="jumpToSub('sub-pesawat')">✈️ Gaya Angkat Pesawat</button>
-                            <button onclick="jumpToSub('sub-nyamuk')">🦟 Penyemprot Nyamuk</button>
-                            <button onclick="jumpToSub('sub-venturi')">🔬 Venturimeter</button>
-                            <button onclick="jumpToSub('sub-pitot')">🌬️ Pipa Pitot</button>
-                            <button onclick="jumpToSub('sub-torricelli')">🍾 Kebocoran Tangki</button>
-                        </div>
+                    <div class="bmap-pillar-card highlight-pillar">
+                        <span>🔑 2. PRINSIP KUNCI BERNOULLI</span>
+                        <strong>Laju Cepat (v ↑) ➔ Tekanan Turun (P ↓)</strong>
+                        <p>Pada pipa mendatar (h₁ = h₂), bagian fluida yang mengalir lebih cepat selalu memiliki tekanan statis lebih rendah.</p>
                     </div>
+                    <div class="bmap-pillar-card">
+                        <span>📏 3. TIGA BESARAN UTAMA</span>
+                        <strong>Tekanan (P), Laju (v), Tinggi (h)</strong>
+                        <p>Ketiga variabel ini saling berkaitan di sepanjang garis alir (streamline) pada fluida ideal yang tunak.</p>
+                    </div>
+                </div>
+
+                <!-- GARIS CABANG KE PENERAPAN TEKNOLOGI -->
+                <div class="bmap-line-v"></div>
+                <div class="bmap-sub-label">⬇️ KLIK 6 SUB-MATERI & TEKNOLOGI PENERAPAN HUKUM BERNOULLI DI BAWAH INI ⬇️</div>
+
+                <!-- LEVEL 3: 6 TOMBOL CABANG MATERI & PENERAPAN -->
+                <div class="bmap-apps-grid">
+                    <button class="bmap-node" onclick="jumpToSub('sub-asas')">
+                        <span class="node-icon">📐</span>
+                        <strong>Penurunan Rumus</strong>
+                        <small>Usaha & Energi Fluida</small>
+                    </button>
+                    <button class="bmap-node" onclick="jumpToSub('sub-pesawat')">
+                        <span class="node-icon">✈️</span>
+                        <strong>Sayap Pesawat</strong>
+                        <small>Gaya Angkat (F₁ − F₂)</small>
+                    </button>
+                    <button class="bmap-node" onclick="jumpToSub('sub-nyamuk')">
+                        <span class="node-icon">🦟</span>
+                        <strong>Penyemprot Nyamuk</strong>
+                        <small>Hisapan Pipa Sempit</small>
+                    </button>
+                    <button class="bmap-node" onclick="jumpToSub('sub-venturi')">
+                        <span class="node-icon">🔬</span>
+                        <strong>Venturimeter</strong>
+                        <small>Ukur Laju Cairan (v₁)</small>
+                    </button>
+                    <button class="bmap-node" onclick="jumpToSub('sub-pitot')">
+                        <span class="node-icon">🌬️</span>
+                        <strong>Tabung Pitot</strong>
+                        <small>Ukur Laju Gas (v₁)</small>
+                    </button>
+                    <button class="bmap-node" onclick="jumpToSub('sub-torricelli')">
+                        <span class="node-icon">🍾</span>
+                        <strong>Teorema Torricelli</strong>
+                        <small>Tangki / Botol Bocor</small>
+                    </button>
                 </div>
             </div>
         </section>
@@ -839,7 +884,7 @@
     <main id="tab-evaluasi" class="tab-content">
         <section class="eval-section">
             <div class="section-title">
-                <span class="eyebrow">BAGIAN C • MODUL FLUIDA DINAMIS</span>
+                <span class="eyebrow">BAGIAN C • MODUL HUKUM BERNOULLI</span>
                 <h2>🧮 Contoh Soal & <span>Pembahasan Bertahap</span></h2>
             </div>
 
@@ -894,7 +939,7 @@
             <div class="quiz-container arena-shell">
                 <!-- 1. LAYAR LOBBY MULAI GAME -->
                 <div id="arena-lobby" class="arena-lobby">
-                    <span class="eyebrow">GAME SHOW EVALUASI • 10 SOAL FLUIDA DINAMIS</span>
+                    <span class="eyebrow">GAME SHOW EVALUASI • 10 SOAL HUKUM BERNOULLI</span>
                     <h2>🏆 Arena Turnamen <span>Bernoulli Blitz!</span></h2>
                     <p>Masukkan Nama & Kelasmu terlebih dahulu. Skor turnamen dan nilai evaluasi akan langsung masuk ke <strong>Live Leaderboard Kelas</strong>!</p>
 
