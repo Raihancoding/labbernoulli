@@ -1108,7 +1108,7 @@ const evaluationQuestions = [
         explain: "v₁ = √[ 544 / 1,36 ] = √400 = 20 m/s."
     },
     {
-        topic: "ANALISIS FENOMENA KONTINUITAS & BERNOULLI",
+        topic: "ANALISIS FENOMENA BERNOULLI",
         q: "10. Dua perahu motor melaju sejajar dengan kecepatan tinggi dalam jarak yang sangat berdekatan. Fenomena fisika yang paling tepat menjelaskan mengapa kedua perahu tersebut tiba-tiba terdorong saling mendekat dan bertabrakan adalah ....",
         opts: [
             "A. Aliran air di celah sempit antar perahu bergerak lambat sehingga tekanannya membesar",
