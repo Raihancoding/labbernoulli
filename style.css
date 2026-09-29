@@ -35,6 +35,23 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
     font-family: 'JetBrains Mono', 'Consolas', monospace;
 }
 
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #040a12;
+}
+::-webkit-scrollbar-thumb {
+    background: #173352;
+    border-radius: 99px;
+    border: 2px solid #040a12;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+}
+
 /* TOAST NOTIFICATIONS */
 .toast-container {
     position: fixed;
@@ -284,49 +301,50 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
 .pbl-feedback { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 12.5px; line-height: 1.45; }
 
 /* =====================================================
-   BAGAN PETA KONSEP KHUSUS HUKUM BERNOULLI (HIERARKI)
+   BAGAN PETA KONSEP HUKUM BERNOULLI BERHIERARKI
 ===================================================== */
 .bernoulli-map {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 0;
+    width: 100%;
 }
 
 .bmap-root {
-    background: linear-gradient(135deg, #0e3a66, #09223f);
+    background: linear-gradient(135deg, #0d3b66 0%, #092340 100%);
     border: 2px solid var(--blue);
-    box-shadow: 0 0 25px rgba(72, 215, 255, 0.22);
-    border-radius: 18px;
-    padding: 18px 32px;
+    border-radius: 16px;
+    padding: 16px 32px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.2s;
-    max-width: 580px;
-    width: 100%;
+    box-shadow: 0 8px 25px rgba(72, 215, 255, 0.2);
+    transition: transform 0.2s, border-color 0.2s;
 }
-.bmap-root:hover { transform: translateY(-3px); border-color: var(--cyan); }
+.bmap-root:hover {
+    transform: translateY(-2px);
+    border-color: var(--cyan);
+}
 .bmap-tag {
     font-size: 10px;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 2px;
     color: var(--cyan);
     display: block;
     margin-bottom: 4px;
 }
 .bmap-root h3 {
-    font-size: 22px;
+    font-size: 20px;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 .bmap-eq {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(69, 228, 189, 0.35);
-    color: var(--cyan);
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 14px;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
     font-weight: 800;
+    color: var(--blue);
+    border: 1px solid rgba(72, 215, 255, 0.3);
 }
 
 .bmap-line-v {
@@ -341,47 +359,27 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
     gap: 16px;
     width: 100%;
     position: relative;
-    padding-top: 14px;
 }
-.bmap-pillars::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 16.6%;
-    right: 16.6%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
-    border-radius: 99px;
-}
-
 .bmap-pillar-card {
     background: var(--panel-soft);
     border: 1px solid rgba(72, 215, 255, 0.25);
+    border-top: 3px solid var(--blue);
     border-radius: 14px;
     padding: 16px;
     text-align: center;
-    position: relative;
-}
-.bmap-pillar-card::before {
-    content: "";
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 14px;
-    background: var(--cyan);
 }
 .bmap-pillar-card.highlight-pillar {
-    border: 1.5px solid var(--cyan);
-    background: linear-gradient(145deg, rgba(69, 228, 189, 0.14), rgba(17, 37, 62, 0.95));
+    border-color: var(--cyan);
+    border-top: 3px solid var(--cyan);
+    background: linear-gradient(180deg, rgba(69, 228, 189, 0.14), rgba(17, 37, 62, 0.95));
 }
 .bmap-pillar-card span {
     display: block;
     font-size: 10.5px;
-    font-weight: 800;
-    color: var(--orange);
-    margin-bottom: 5px;
+    font-weight: 900;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
 }
 .bmap-pillar-card strong {
     display: block;
@@ -392,7 +390,7 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
 .bmap-pillar-card p {
     font-size: 12.5px;
     color: var(--muted);
-    line-height: 1.5;
+    line-height: 1.45;
 }
 
 .bmap-sub-label {
@@ -401,10 +399,10 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
     color: var(--cyan);
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 1px;
     padding: 6px 18px;
     border-radius: 99px;
     margin-bottom: 16px;
+    letter-spacing: 0.8px;
     text-align: center;
 }
 
@@ -414,7 +412,6 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
     gap: 12px;
     width: 100%;
 }
-
 .bmap-node {
     background: var(--panel-soft);
     border: 1.5px solid rgba(72, 215, 255, 0.28);
@@ -425,18 +422,27 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    transition: all 0.22s ease;
+    text-align: center;
+    gap: 4px;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
 }
 .bmap-node:hover {
     transform: translateY(-4px);
     border-color: var(--cyan);
     background: rgba(69, 228, 189, 0.16);
-    box-shadow: 0 8px 20px rgba(69, 228, 189, 0.22);
 }
-.node-icon { font-size: 26px; }
-.bmap-node strong { font-size: 13px; color: #fff; }
-.bmap-node small { font-size: 11px; color: var(--cyan); font-weight: 600; }
+.bmap-node .node-icon {
+    font-size: 26px;
+    margin-bottom: 2px;
+}
+.bmap-node strong {
+    font-size: 13px;
+    color: #fff;
+}
+.bmap-node small {
+    font-size: 11px;
+    color: var(--muted);
+}
 
 /* MATERI LAYOUT */
 .materi-layout { display: grid; grid-template-columns: 280px 1fr; gap: 22px; }
@@ -770,15 +776,15 @@ canvas { width: 100%; height: 430px; display: block; }
 }
 
 /* TAB 3: MITOS VS FAKTA & BADGE TROFI */
-@keyframes cardFlipIn {
-    0% { opacity: 0; transform: rotateX(-25deg) scale(0.96); }
-    100% { opacity: 1; transform: rotateX(0deg) scale(1); }
-}
-
 .myth-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
+}
+
+@keyframes cardFlipIn {
+    0% { opacity: 0; transform: rotateX(-25deg) scale(0.96); }
+    100% { opacity: 1; transform: rotateX(0deg) scale(1); }
 }
 
 .myth-card {
@@ -1258,23 +1264,7 @@ canvas { width: 100%; height: 430px; display: block; }
 
 .hidden { display: none !important; }
 
-/* CUSTOM SCROLLBAR & FULLSCREEN CHROME RULES */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-::-webkit-scrollbar-track {
-    background: #040a12;
-}
-::-webkit-scrollbar-thumb {
-    background: #173352;
-    border-radius: 99px;
-    border: 2px solid #040a12;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--cyan);
-}
-
+/* FULLSCREEN CHROME RULES */
 :fullscreen, ::backdrop {
     background-color: var(--bg);
 }
@@ -1289,6 +1279,5 @@ html:fullscreen, body:fullscreen {
     .pbl-grid, .bmap-pillars, .bmap-apps-grid, .materi-layout, .lab-workspace, .myth-grid, .badge-grid, .contoh-grid, .telemetry-row, .eng-stats-grid, .arena-hud, .kahoot-grid, .podium-grid {
         grid-template-columns: 1fr;
     }
-    .bmap-pillars::before { display: none; }
     .k-color-4 { grid-column: span 1; }
 }
