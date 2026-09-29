@@ -39,9 +39,10 @@
                 <button id="bgm-btn" class="icon-btn" onclick="toggleBGM()">
                     🎵 Radio: OFF
                 </button>
-                <select id="bgm-style" class="bgm-select" onchange="changeBGMStyle(this.value)" title="Pilih Genre Musik Lab">
+               <select id="bgm-style" class="bgm-select" onchange="changeBGMStyle(this.value)" title="Pilih Genre Musik Lab">
                     <option value="lofi">🎧 Lo-Fi Focus</option>
                     <option value="synth">⚡ Cyber Synth</option>
+                    <option value="custom">🎶 Musik Sendiri (MP3)</option>
                 </select>
                 <input type="range" id="bgm-vol" min="0" max="100" value="45" title="Volume Musik" oninput="changeBGMVolume(this.value)">
                 <button id="sfx-btn" class="icon-btn" onclick="toggleSFX()">
