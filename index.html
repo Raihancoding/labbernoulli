@@ -143,17 +143,14 @@
             </div>
 
             <div class="bernoulli-map">
-                <!-- LEVEL 1: AKAR UTAMA BERNOULLI -->
                 <div class="bmap-root" onclick="jumpToSub('sub-asas')">
                     <span class="bmap-tag">PRINSIP UTAMA FLUIDA MENGALIR</span>
                     <h3>HUKUM / ASAS BERNOULLI</h3>
                     <div class="bmap-eq">P₁ + ½ρv₁² + ρgh₁ = P₂ + ½ρv₂² + ρgh₂ = Konstan</div>
                 </div>
 
-                <!-- GARIS PENGHUBUNG VERTIKAL 1 -->
                 <div class="bmap-line-v"></div>
 
-                <!-- LEVEL 2: 3 PILAR KONSEP BERNOULLI -->
                 <div class="bmap-pillars">
                     <div class="bmap-pillar-card">
                         <span>⚡ 1. DASAR PENURUNAN RUMUS</span>
@@ -172,11 +169,9 @@
                     </div>
                 </div>
 
-                <!-- GARIS PENGHUBUNG VERTIKAL 2 -->
                 <div class="bmap-line-v"></div>
                 <div class="bmap-sub-label">⬇️ KLIK SALAH SATU TOPIK DI BAWAH UNTUK MEMBUKA ANIMASI & RUMUS ⬇️</div>
 
-                <!-- LEVEL 3: 6 CABANG MATERI & TEKNOLOGI BERNOULLI -->
                 <div class="bmap-apps-grid">
                     <button class="bmap-node" onclick="jumpToSub('sub-asas')">
                         <span class="node-icon">📐</span>
@@ -779,57 +774,77 @@
     <main id="tab-miskonsepsi" class="tab-content">
         <section class="myth-section">
             <div class="section-title">
-                <span class="eyebrow">PENGUATAN KONSEP • HINDARI JEBAKAN FISIKA (+15 XP / Kartu)</span>
+                <span class="eyebrow">PENGUATAN KONSEP • HINDARI JEBAKAN FISIKA</span>
                 <h2>⚡ Arena Mitos vs Fakta: <span>Bedah Miskonsepsi Bernoulli</span></h2>
-                <p>Banyak orang keliru memahami fluida dinamis karena menggunakan intuisi sehari-hari yang salah. Klik keempat kartu di bawah untuk membalik fakta fisikanya dan klaim bonus XP!</p>
+                <p>Tebak fakta fisika di balik pernyataan berikut! Pilih jawaban dengan tepat untuk mengumpulkan XP. Hati-hati, jawaban salah tidak akan mendapatkan poin!</p>
             </div>
 
             <div class="myth-grid">
-                <div class="myth-card" onclick="flipMythCard(this, 1)">
+                <!-- KARTU 1 -->
+                <div class="myth-card" id="myth-1">
                     <div class="myth-front">
-                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #1? (+15 XP)</span>
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #1? (Taruhan 15 XP)</span>
                         <h3>"Saat air masuk ke bagian pipa yang sempit, air akan berdesak-desakan sehingga TEKANAN pada dinding pipa sempit pasti LEBIH BESAR."</h3>
-                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                        <div class="myth-choices">
+                            <button onclick="answerMyth(this, 1, false)">🔴 MITOS</button>
+                            <button onclick="answerMyth(this, 1, true)">🟢 FAKTA</button>
+                        </div>
                     </div>
                     <div class="myth-back">
-                        <span class="fact-tag">❌ MITOS! (KONSEP YANG SALAH)</span>
-                        <p><strong>Fakta Fisika:</strong> Di bagian pipa yang sempit, yang membesar adalah <strong>kelajuan aliran (v<sub>2</sub> &gt; v<sub>1</sub>)</strong>. Sesuai Hukum Kekekalan Energi (Asas Bernoulli), peningkatan energi kinetik fluida harus dibayar dengan <strong>penurunan tekanan statis (P<sub>2</sub> &lt; P<sub>1</sub>)</strong>!</p>
+                        <div class="myth-result-msg"></div>
+                        <span class="fact-tag">Penjelasan Fisika:</span>
+                        <p>Di bagian pipa yang sempit, yang membesar adalah <strong>kelajuan aliran (v<sub>2</sub> &gt; v<sub>1</sub>)</strong>. Sesuai Hukum Kekekalan Energi (Asas Bernoulli), peningkatan energi kinetik fluida harus dibayar dengan <strong>penurunan tekanan statis (P<sub>2</sub> &lt; P<sub>1</sub>)</strong>!</p>
                     </div>
                 </div>
 
-                <div class="myth-card" onclick="flipMythCard(this, 2)">
+                <!-- KARTU 2 -->
+                <div class="myth-card" id="myth-2">
                     <div class="myth-front">
-                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #2? (+15 XP)</span>
-                        <h3>"Semakin dalam posisi lubang kebocoran dari permukaan air (h<sub>1</sub> makin besar), maka jarak jatuh pancaran air di lantai (x) PASTI makin jauh."</h3>
-                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #2? (Taruhan 15 XP)</span>
+                        <h3>"Semakin dalam posisi lubang kebocoran dari permukaan air (h₁ makin besar), maka jarak jatuh pancaran air di lantai (x) PASTI makin jauh."</h3>
+                        <div class="myth-choices">
+                            <button onclick="answerMyth(this, 2, false)">🔴 MITOS</button>
+                            <button onclick="answerMyth(this, 2, true)">🟢 FAKTA</button>
+                        </div>
                     </div>
                     <div class="myth-back">
-                        <span class="fact-tag">⚠️ BELUM TENTU!</span>
-                        <p><strong>Fakta Fisika:</strong> Laju keluar air memang makin cepat (<strong>v = √(2gh<sub>1</sub>)</strong>), tetapi jarak horizontal ditentukan oleh <strong>x = 2√(h<sub>1</sub> · h<sub>2</sub>)</strong>. Jika lubang terlalu dekat dengan dasar lantai (h<sub>2</sub> mendekati 0), air langsung menyentuh lantai sehingga jarak x justru sangat pendek! Jarak x maksimum terjadi tepat di tengah-tengah tinggi air (h<sub>1</sub> = h<sub>2</sub>).</p>
+                        <div class="myth-result-msg"></div>
+                        <span class="fact-tag">Penjelasan Fisika:</span>
+                        <p>Laju keluar air memang makin cepat (<strong>v = √(2gh<sub>1</sub>)</strong>), tetapi jarak horizontal ditentukan oleh <strong>x = 2√(h<sub>1</sub> · h<sub>2</sub>)</strong>. Jika lubang terlalu dekat dengan dasar lantai (h<sub>2</sub> mendekati 0), air langsung menyentuh lantai sehingga jarak x justru sangat pendek!</p>
                     </div>
                 </div>
 
-                <div class="myth-card" onclick="flipMythCard(this, 3)">
+                <!-- KARTU 3 -->
+                <div class="myth-card" id="myth-3">
                     <div class="myth-front">
-                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #3? (+15 XP)</span>
-                        <h3>"Pada Pipa Pitot, kaki manometer yang menghadap langsung menantang arah aliran gas memiliki laju fluida nol (v<sub>2</sub> = 0) dan bertekanan paling tinggi."</h3>
-                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #3? (Taruhan 15 XP)</span>
+                        <h3>"Pada Pipa Pitot, mulut pipa yang menghadap langsung menantang arah aliran gas memiliki kelajuan fluida nol (v₂ = 0) dan bertekanan paling tinggi."</h3>
+                        <div class="myth-choices">
+                            <button onclick="answerMyth(this, 3, false)">🔴 MITOS</button>
+                            <button onclick="answerMyth(this, 3, true)">🟢 FAKTA</button>
+                        </div>
                     </div>
                     <div class="myth-back">
-                        <span class="fact-tag">✅ FAKTA TEPAT!</span>
-                        <p><strong>Fakta Fisika:</strong> Titik di mulut pipa yang menghadap lurus aliran gas disebut <strong>Titik Stagnasi</strong>. Karena gas tertahan berhenti di dalam pipa U (v<sub>2</sub> = 0), seluruh energi kinetiknya berubah menjadi tekanan, mendorong permukaan raksa turun sebesar <strong>h</strong>.</p>
+                        <div class="myth-result-msg"></div>
+                        <span class="fact-tag">Penjelasan Fisika:</span>
+                        <p>Titik di mulut pipa yang menghadap lurus aliran gas disebut <strong>Titik Stagnasi</strong>. Karena gas tertahan berhenti di dalam pipa U (v₂ = 0), seluruh energi kinetiknya berubah menjadi tekanan, mendorong permukaan raksa turun sebesar <strong>h</strong>.</p>
                     </div>
                 </div>
 
-                <div class="myth-card" onclick="flipMythCard(this, 4)">
+                <!-- KARTU 4 -->
+                <div class="myth-card" id="myth-4">
                     <div class="myth-front">
-                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #4? (+15 XP)</span>
-                        <h3>"Sayap mobil balap Formula 1 (F1) menggunakan bentuk yang sama persis dengan sayap pesawat terbang agar mobil terasa ringan."</h3>
-                        <p class="click-hint">👆 Klik kartu untuk membalik jawaban</p>
+                        <span class="myth-tag">🤔 MITOS ATAU FAKTA #4? (Taruhan 15 XP)</span>
+                        <h3>"Sayap mobil balap Formula 1 (F1) menggunakan bentuk yang sama persis dengan sayap pesawat terbang agar mobil terasa ringan dan melaju cepat."</h3>
+                        <div class="myth-choices">
+                            <button onclick="answerMyth(this, 4, false)">🔴 MITOS</button>
+                            <button onclick="answerMyth(this, 4, true)">🟢 FAKTA</button>
+                        </div>
                     </div>
                     <div class="myth-back">
-                        <span class="fact-tag">❌ MITOS! (JUSTRU TERBALIK)</span>
-                        <p><strong>Fakta Fisika:</strong> Sayap mobil F1 dipasang <strong>terbalik (sisi melengkung di bawah, sisi datar di atas)</strong>. Tujuannya agar udara di kolong mobil mengalir lebih cepat (tekanan rendah) sehingga menghasilkan gaya tekan ke bawah (<em>Downforce</em>) agar ban mobil mencengkeram aspal saat menikung cepat!</p>
+                        <div class="myth-result-msg"></div>
+                        <span class="fact-tag">Penjelasan Fisika:</span>
+                        <p>Sayap mobil F1 dipasang <strong>terbalik (sisi melengkung di bawah, datar di atas)</strong>. Tujuannya agar udara di kolong mengalir lebih cepat (tekanan rendah) sehingga menghasilkan gaya tekan ke bawah (<em>Downforce</em>) agar ban mencengkeram aspal!</p>
                     </div>
                 </div>
             </div>
@@ -1077,15 +1092,16 @@
                 <div class="section-title">
                     <span class="eyebrow">SERTIFIKASI PRAKTIKUM VIRTUAL</span>
                     <h2>🪪 Cetak Kartu Lisensi <span>Insinyur Fluida Bernoulli</span></h2>
-                    <p>Masukkan nama dan kelasmu untuk menerbitkan kartu hasil praktikum dan evaluasi yang siap di-<em>screenshot</em> atau dicetak:</p>
+                    <p>Masukkan nama dan kelasmu untuk menerbitkan kartu hasil praktikum dan evaluasi yang siap di-<em>screenshot</em> atau dicetak. (Hanya kartu ini yang akan tercetak di kertas!)</p>
                 </div>
 
                 <div class="license-form">
                     <input type="text" id="inp-student-name" placeholder="Ketik Nama Lengkapmu..." oninput="syncStudentIdentity(this.value, null)">
                     <input type="text" id="inp-student-class" placeholder="Kelas (Contoh: XI MIPA 1)" oninput="syncStudentIdentity(null, this.value)">
-                    <button class="primary-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+                    <button class="primary-btn" onclick="window.print()">🖨️ Cetak Lisensi (Print)</button>
                 </div>
 
+                <!-- Desain Kartu Khusus Cetak -->
                 <div class="engineer-card" id="printable-license">
                     <div class="eng-card-head">
                         <div>
@@ -1113,6 +1129,7 @@
                             <strong id="lic-status">DALAM PELATIHAN</strong>
                         </div>
                     </div>
+                    <div class="eng-barcode" id="lic-barcode">*BNL-0-0*</div>
                 </div>
             </div>
         </section>
