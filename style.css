@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -19,10 +20,19 @@
 }
 
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
     background: radial-gradient(circle at 15% 0%, #0d2744 0%, var(--bg) 70%);
     color: var(--text);
     min-height: 100vh;
+}
+
+h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.3px;
+}
+
+.math-block, .math-inline, .xray-math, .bmap-eq {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
 }
 
 /* TOAST NOTIFICATIONS */
@@ -184,7 +194,12 @@ body {
     transition: width 0.4s ease;
 }
 
-/* TAB CONTENT (FULL WIDTH SUPPORT) */
+/* TAB CONTENT & SMOOTH REVEAL */
+@keyframes smoothReveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .tab-content {
     display: none;
     width: 100%;
@@ -192,7 +207,10 @@ body {
     margin: 0 auto;
     padding: 22px 28px 60px;
 }
-.tab-content.active { display: block; }
+.tab-content.active {
+    display: block;
+    animation: smoothReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
 .eyebrow {
     font-size: 11px;
@@ -265,31 +283,162 @@ body {
 .pbl-btns button:hover { background: rgba(69, 228, 189, 0.2); border-color: var(--cyan); }
 .pbl-feedback { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 12.5px; line-height: 1.45; }
 
-/* PETA KONSEP & MATERI */
-.concept-tree { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.tree-root { background: linear-gradient(90deg, #1d4ed8, #0284c7); padding: 10px 24px; border-radius: 10px; font-weight: 900; }
-.tree-branches { display: grid; grid-template-columns: 1fr 1.5fr; gap: 18px; width: 100%; }
-.branch-col { background: var(--panel-soft); border-radius: 14px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.07); }
-.branch-head { font-weight: 800; color: var(--blue); margin-bottom: 10px; font-size: 14px; }
-.cyan-head { color: var(--cyan); }
-.branch-items { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
-.branch-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.branch-pills button {
-    background: rgba(69, 228, 189, 0.12);
-    border: 1px solid rgba(69, 228, 189, 0.35);
-    color: white;
-    padding: 7px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.branch-pills button:hover {
-    background: var(--cyan);
-    color: #03101c;
+/* =====================================================
+   BAGAN PETA KONSEP KHUSUS HUKUM BERNOULLI (HIERARKI)
+===================================================== */
+.bernoulli-map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
 }
 
+.bmap-root {
+    background: linear-gradient(135deg, #0e3a66, #09223f);
+    border: 2px solid var(--blue);
+    box-shadow: 0 0 25px rgba(72, 215, 255, 0.22);
+    border-radius: 18px;
+    padding: 18px 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    max-width: 580px;
+    width: 100%;
+}
+.bmap-root:hover { transform: translateY(-3px); border-color: var(--cyan); }
+.bmap-tag {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    display: block;
+    margin-bottom: 4px;
+}
+.bmap-root h3 {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.bmap-eq {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(69, 228, 189, 0.35);
+    color: var(--cyan);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.bmap-line-v {
+    width: 3px;
+    height: 26px;
+    background: linear-gradient(180deg, var(--blue), var(--cyan));
+}
+
+.bmap-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    position: relative;
+    padding-top: 14px;
+}
+.bmap-pillars::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 16.6%;
+    right: 16.6%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+    border-radius: 99px;
+}
+
+.bmap-pillar-card {
+    background: var(--panel-soft);
+    border: 1px solid rgba(72, 215, 255, 0.25);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+}
+.bmap-pillar-card::before {
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 14px;
+    background: var(--cyan);
+}
+.bmap-pillar-card.highlight-pillar {
+    border: 1.5px solid var(--cyan);
+    background: linear-gradient(145deg, rgba(69, 228, 189, 0.14), rgba(17, 37, 62, 0.95));
+}
+.bmap-pillar-card span {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: var(--orange);
+    margin-bottom: 5px;
+}
+.bmap-pillar-card strong {
+    display: block;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.bmap-pillar-card p {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.bmap-sub-label {
+    background: rgba(69, 228, 189, 0.14);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 6px 18px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.bmap-apps-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.bmap-node {
+    background: var(--panel-soft);
+    border: 1.5px solid rgba(72, 215, 255, 0.28);
+    border-radius: 14px;
+    padding: 14px 10px;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.22s ease;
+}
+.bmap-node:hover {
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+    background: rgba(69, 228, 189, 0.16);
+    box-shadow: 0 8px 20px rgba(69, 228, 189, 0.22);
+}
+.node-icon { font-size: 26px; }
+.bmap-node strong { font-size: 13px; color: #fff; }
+.bmap-node small { font-size: 11px; color: var(--cyan); font-weight: 600; }
+
+/* MATERI LAYOUT */
 .materi-layout { display: grid; grid-template-columns: 280px 1fr; gap: 22px; }
 .materi-nav {
     background: var(--panel);
@@ -317,7 +466,10 @@ body {
 
 .materi-reader { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 30px; }
 .materi-article { display: none; }
-.materi-article.active { display: block; }
+.materi-article.active {
+    display: block;
+    animation: smoothReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 .badge {
     display: inline-block;
     background: rgba(72, 215, 255, 0.15);
@@ -383,7 +535,6 @@ body {
     border-left: 3px solid var(--blue);
     padding: 10px 12px;
     border-radius: 8px;
-    font-family: monospace;
     font-size: 13.5px;
     color: white;
     margin: 8px 0;
@@ -546,7 +697,7 @@ canvas { width: 100%; height: 430px; display: block; }
 }
 .xray-head { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
 .xray-head strong { color: var(--blue); }
-.xray-math { font-family: 'Consolas', monospace; font-size: 14.5px; font-weight: 800; color: var(--cyan); }
+.xray-math { font-size: 14.5px; font-weight: 800; color: var(--cyan); }
 
 .telemetry-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .tele-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
@@ -619,6 +770,11 @@ canvas { width: 100%; height: 430px; display: block; }
 }
 
 /* TAB 3: MITOS VS FAKTA & BADGE TROFI */
+@keyframes cardFlipIn {
+    0% { opacity: 0; transform: rotateX(-25deg) scale(0.96); }
+    100% { opacity: 1; transform: rotateX(0deg) scale(1); }
+}
+
 .myth-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -641,7 +797,13 @@ canvas { width: 100%; height: 430px; display: block; }
 .myth-card .myth-back { display: none; }
 .myth-card.flipped { background: rgba(69, 228, 189, 0.12); border-color: var(--cyan); }
 .myth-card.flipped .myth-front { display: none; }
-.myth-card.flipped .myth-back { display: block; }
+.myth-card.flipped .myth-back {
+    display: block;
+    animation: cardFlipIn 0.3s ease-out forwards;
+}
+.myth-card:not(.flipped) .myth-front {
+    animation: cardFlipIn 0.3s ease-out forwards;
+}
 
 .myth-tag { font-size: 11px; font-weight: 900; color: var(--orange); display: block; margin-bottom: 8px; }
 .fact-tag { font-size: 12px; font-weight: 900; color: var(--cyan); display: block; margin-bottom: 8px; }
@@ -1096,74 +1258,7 @@ canvas { width: 100%; height: 430px; display: block; }
 
 .hidden { display: none !important; }
 
-/* FULLSCREEN CHROME RULES */
-:fullscreen, ::backdrop {
-    background-color: var(--bg);
-}
-html:fullscreen, body:fullscreen {
-    width: 100vw;
-    height: 100vh;
-    overflow-y: auto !important;
-    background: radial-gradient(circle at 15% 0%, #0d2744 0%, var(--bg) 70%);
-}
-
-@media (max-width: 950px) {
-    .pbl-grid, .tree-branches, .materi-layout, .lab-workspace, .myth-grid, .badge-grid, .contoh-grid, .telemetry-row, .eng-stats-grid, .arena-hud, .kahoot-grid, .podium-grid {
-        grid-template-columns: 1fr;
-    }
-    .k-color-4 { grid-column: span 1; }
-}
-/* =====================================================
-   VISUAL POLISH: GOOGLE FONTS, SMOOTH TRANSITION & SCROLLBAR
-===================================================== */
-body {
-    font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
-}
-
-h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: -0.3px;
-}
-
-.math-block, .math-inline, .xray-math {
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-}
-
-/* Animasi Halus Saat Pindah Tab & Sub-Materi */
-@keyframes smoothReveal {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.tab-content.active,
-.materi-article.active {
-    animation: smoothReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Efek Putar (Flip) Halus pada Kartu Mitos vs Fakta */
-@keyframes cardFlipIn {
-    0% {
-        opacity: 0;
-        transform: rotateX(-25deg) scale(0.96);
-    }
-    100% {
-        opacity: 1;
-        transform: rotateX(0deg) scale(1);
-    }
-}
-
-.myth-card.flipped .myth-back,
-.myth-card:not(.flipped) .myth-front {
-    animation: cardFlipIn 0.3s ease-out forwards;
-}
-
-/* Custom Scrollbar Tema Cyber Dark untuk Chrome */
+/* CUSTOM SCROLLBAR & FULLSCREEN CHROME RULES */
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -1178,4 +1273,22 @@ h1, h2, h3, .logo, .tele-card strong, .podium-card strong, .highlight-formula h3
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--cyan);
+}
+
+:fullscreen, ::backdrop {
+    background-color: var(--bg);
+}
+html:fullscreen, body:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto !important;
+    background: radial-gradient(circle at 15% 0%, #0d2744 0%, var(--bg) 70%);
+}
+
+@media (max-width: 950px) {
+    .pbl-grid, .bmap-pillars, .bmap-apps-grid, .materi-layout, .lab-workspace, .myth-grid, .badge-grid, .contoh-grid, .telemetry-row, .eng-stats-grid, .arena-hud, .kahoot-grid, .podium-grid {
+        grid-template-columns: 1fr;
+    }
+    .bmap-pillars::before { display: none; }
+    .k-color-4 { grid-column: span 1; }
 }
