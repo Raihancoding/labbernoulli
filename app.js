@@ -100,7 +100,9 @@ function addXP(amount, reason = "") {
 // 1. GENERATOR RADIO SYNTH MULTI-LAYER & EFEK SUARA FISIKA
 // =====================================================
 let audioCtx = null;
-
+// Tambahkan kode ini untuk memuat MP3 kustom
+const customAudio = new Audio("musik-sendiri.mp3");
+customAudio.loop = true; // Agar lagu mengulang otomatis
 function initAudio() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
